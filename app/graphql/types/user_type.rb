@@ -9,5 +9,29 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :company, Types::CompanyType, null: true
+    field :connections,
+      [ Types::UserType ],
+      null: true,
+      description: "All accepted connections for this user"
+    field :pending_sent_requests,
+      [ Types::UserType ],
+      null: true,
+      description: "Users this user has sent a pending connection request to"
+    field :pending_received_requests,
+      [ Types::UserType ],
+      null: true,
+      description: "Users who have sent a pending connection request to this user"
+
+    def connections
+      object.connected_users
+    end
+
+    def pending_sent_requests
+      object.pending_sent_requests
+    end
+
+    def pending_received_requests
+      object.pending_received_requests
+    end
   end
 end
