@@ -17,6 +17,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_25_005509) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "connections", force: :cascade do |t|
+    t.integer "requester_id", null: false
+    t.integer "recipient_id", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipient_id"], name: "index_connections_on_recipient_id"
+    t.index ["requester_id", "recipient_id"], name: "index_connections_on_requester_id_and_recipient_id", unique: true
+    t.index ["requester_id"], name: "index_connections_on_requester_id"
+    t.index ["status"], name: "index_connections_on_status"
+  end
+
   create_table "users", force: :cascade do |t|
     t.integer "company_id", null: false
     t.string "first_name", null: false
@@ -26,5 +38,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_25_005509) do
     t.index ["company_id"], name: "index_users_on_company_id"
   end
 
+  add_foreign_key "connections", "users", column: "recipient_id"
+  add_foreign_key "connections", "users", column: "requester_id"
   add_foreign_key "users", "companies"
 end
