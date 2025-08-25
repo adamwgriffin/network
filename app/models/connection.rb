@@ -14,6 +14,10 @@ class Connection < ApplicationRecord
   scope :accepted, -> { where(status: "accepted") }
   scope :declined, -> { where(status: "declined") }
   scope :blocked, -> { where(status: "blocked") }
+  scope :for_users, ->(user_a, user_b) {
+    where(requester: user_a, recipient: user_b)
+      .or(where(requester: user_b, recipient: user_a))
+  }
 
   # Find all accepted connection requests for a user
   def self.user_connections(user)
@@ -35,15 +39,10 @@ class Connection < ApplicationRecord
       .update!(status: "declined")
   end
 
-  def self.remove_connection(user_id, other_user_id)
-    Connection.find_by!(
-      "(requester_id = ? AND recipient_id = ?) OR (requester_id = ? AND recipient_id = ?)",
-      user_id,
-      other_user_id,
-      other_user_id,
-      user_id
-    )
-    .destroy!
+  def self.remove_connection(user_a, user_b)
+    self.for_users(user_a, user_b)
+      .take!
+      .destroy!
   end
 
   private
