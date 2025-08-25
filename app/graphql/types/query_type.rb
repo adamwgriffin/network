@@ -26,5 +26,11 @@ module Types
     def users
       User.all
     end
+
+    field :companies, [ Types::CompanyType ], null: false,
+      description: "Return a list of companies"
+    def companies
+      Company.all
+    end
   end
 end
