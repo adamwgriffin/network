@@ -23,7 +23,7 @@ module Types
       description: "Users who have sent a pending connection request to this user"
 
     def connections
-      object.connected_users
+      object.connections
     end
 
     def pending_sent_requests

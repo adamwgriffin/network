@@ -15,6 +15,13 @@ class Connection < ApplicationRecord
   scope :declined, -> { where(status: "declined") }
   scope :blocked, -> { where(status: "blocked") }
 
+  # Find all accepted connection requests for a user
+  def self.user_connections(user)
+    where(requester: user)
+      .or(where(recipient: user))
+      .where(status: "accepted")
+  end
+
   # You can pass either a user id or a user model as arguments
   def self.accept_request(requester, recipient)
     self

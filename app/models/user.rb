@@ -10,16 +10,11 @@ class User < ApplicationRecord
   validates :last_name, presence: true
 
   def connections
-    Connection.where(
-      "(requester_id = ? OR recipient_id = ?) AND status = 'accepted'",
-      id,
-      id
-    )
-  end
-
-  def connected_users
-    connection_ids = connections.pluck(:requester_id, :recipient_id).flatten - [ id ]
-    User.where(id: connection_ids)
+    # Get all the user ids, removing this user from the array
+    user_ids = Connection
+      .user_connections(self)
+      .pluck(:requester_id, :recipient_id).flatten - [ id ]
+    User.where(id: user_ids)
   end
 
   def pending_sent_requests
