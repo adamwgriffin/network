@@ -29,38 +29,4 @@ class User < ApplicationRecord
   def pending_received_requests
     received_connections.pending
   end
-
-  def connect_user_to(recipient, status = "accepted")
-    Connection.create!(
-      requester: self,
-      recipient: recipient,
-      status: status
-    )
-  end
-
-  def accept_connection_request(requester)
-    connection = received_connections.find_by(requester: requester, status: "pending")
-    return false unless connection
-
-    connection.update(status: "accepted")
-  end
-
-  def decline_connection_request(requester)
-    connection = received_connections.find_by(requester: requester, status: "pending")
-    return false unless connection
-
-    connection.update(status: "declined")
-  end
-
-  def remove_connection(other_user)
-    connection = Connection.find_by(
-      "(requester_id = ? AND recipient_id = ?) OR (requester_id = ? AND recipient_id = ?)",
-      id,
-      other_user.id,
-      other_user.id,
-      id
-    )
-
-    connection&.destroy
-  end
 end

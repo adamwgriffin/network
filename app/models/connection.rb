@@ -15,6 +15,30 @@ class Connection < ApplicationRecord
   scope :declined, -> { where(status: "declined") }
   scope :blocked, -> { where(status: "blocked") }
 
+  # You can pass either a user id or a user model as arguments
+  def self.accept_request(requester, recipient)
+    self
+      .find_by!(requester: requester, recipient: recipient, status: "pending")
+      .update!(status: "accepted")
+  end
+
+  def self.decline_request(requester, recipient)
+    self
+      .find_by!(requester: requester, recipient: recipient, status: "pending")
+      .update!(status: "declined")
+  end
+
+  def self.remove_connection(user_id, other_user_id)
+    Connection.find_by!(
+      "(requester_id = ? AND recipient_id = ?) OR (requester_id = ? AND recipient_id = ?)",
+      user_id,
+      other_user_id,
+      other_user_id,
+      user_id
+    )
+    .destroy!
+  end
+
   private
 
     def users_are_different
