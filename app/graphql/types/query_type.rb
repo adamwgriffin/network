@@ -41,15 +41,17 @@ module Types
       Company.find_by(id: id)
     end
 
-    field :users, Types::UserType.connection_type, null: false,
-      description: "Return a paginated list of users"
+    field :users, Types::UserType.connection_type, null: false do
+      description "Return a paginated list of users"
+    end
 
     def users
       User.all
     end
 
-    field :companies, Types::CompanyType.connection_type, null: false,
-      description: "Return a paginated list of companies"
+    field :companies, Types::CompanyType.connection_type, null: false do
+      description "Return a paginated list of companies"
+    end
 
     def companies
       Company.all
