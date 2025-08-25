@@ -32,6 +32,15 @@ module Types
       User.find_by(id: id)
     end
 
+    field :company, Types::CompanyType, null: true do
+      description "Find a company by database ID"
+      argument :id, ID, required: true
+    end
+
+    def company(id:)
+      Company.find_by(id: id)
+    end
+
     field :users, [ Types::UserType ], null: false,
       description: "Return a list of users"
 
