@@ -24,7 +24,7 @@ module Types
     # They will be entry points for queries on your schema.
 
     field :user, Types::UserType, null: true do
-      description "Find a user by database ID"
+      description "Find a user by ID"
       argument :id, ID, required: true
     end
 
@@ -33,7 +33,7 @@ module Types
     end
 
     field :company, Types::CompanyType, null: true do
-      description "Find a company by database ID"
+      description "Find a company by ID"
       argument :id, ID, required: true
     end
 
