@@ -7,18 +7,15 @@ module Types
     field :first_name, String, null: false
     field :last_name, String, null: false
     field :company, Types::CompanyType, null: true
-    field :connections,
-      [ Types::UserType ],
-      null: true,
-      description: "All accepted connections for this user"
-    field :pending_sent_requests,
-      [ Types::UserType ],
-      null: true,
-      description: "Users this user has sent a pending connection request to"
-    field :pending_received_requests,
-      [ Types::UserType ],
-      null: true,
-      description: "Users who have sent a pending connection request to this user"
+    field :connections, [ Types::UserType ], null: true do
+      description "All accepted connections for this user"
+    end
+    field :pending_sent_requests, [ Types::UserType ], null: true do
+      description "Users this user has sent a pending connection request to"
+    end
+    field :pending_received_requests, [ Types::UserType ], null: true do
+      description "Users who have sent a pending connection request to this user"
+    end
 
     def connections
       object.connections
