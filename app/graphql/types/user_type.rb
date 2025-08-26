@@ -6,7 +6,7 @@ module Types
     field :company_id, Integer, null: false
     field :first_name, String, null: false
     field :last_name, String, null: false
-    field :company, Types::CompanyType, null: true
+    field :company, Types::CompanyType, null: false
     field :connections, [ Types::UserType ], null: true do
       description "All accepted connections for this user"
     end
