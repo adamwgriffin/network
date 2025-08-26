@@ -1,11 +1,36 @@
 Company.destroy_all
 User.destroy_all
 
-seattle_grace = Company.create!(name: "Seattle Grace Hospital")
-princeton_plainsboro = Company.create!(name: "Princeton-Plainsboro Teaching Hospital")
-county_general = Company.create!(name: "County General Hospital")
-sacred_heart = Company.create!(name: "Sacred Heart Hospital")
-st_eligius = Company.create!(name: "St. Eligius Hospital")
+seattle_grace = Company.create!(
+  name: "Seattle Grace Hospital",
+  headquarters: "Seattle, Washington",
+  description: "A renowned teaching hospital featured in Grey's Anatomy, " \
+               "known for its high-stakes surgeries and dramatic staff relationships."
+)
+princeton_plainsboro = Company.create!(
+  name: "Princeton-Plainsboro Teaching Hospital",
+  headquarters: "Princeton, New Jersey",
+  description: "The primary setting of House, M.D., famous for its diagnostic medicine " \
+               "department led by Dr. Gregory House."
+)
+county_general = Company.create!(
+  name: "County General Hospital",
+  headquarters: "Chicago, Illinois",
+  description: "The central hospital in ER, a busy urban medical center dealing with a " \
+               "wide range of emergencies and personal stories."
+)
+sacred_heart = Company.create!(
+  name: "Sacred Heart Hospital",
+  headquarters: "San DiFrangeles, California",
+  description: "The quirky hospital from Scrubs, known for its comedic staff " \
+               "and heartfelt moments."
+)
+st_eligius = Company.create!(
+  name: "St. Eligius Hospital",
+  headquarters: "Boston, Massachusetts",
+  description: "The setting for St. Elsewhere, a teaching hospital with a reputation " \
+               "for both medical innovation and personal drama."
+)
 
 User.create!([
   # Grey's Anatomy
