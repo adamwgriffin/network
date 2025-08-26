@@ -12,7 +12,9 @@
 
 ActiveRecord::Schema[8.0].define(version: 2025_08_25_005509) do
   create_table "companies", force: :cascade do |t|
-    t.string "name", null: false
+    t.text "name", null: false
+    t.text "headquarters", null: false
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -31,8 +33,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_25_005509) do
 
   create_table "users", force: :cascade do |t|
     t.integer "company_id", null: false
-    t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.text "first_name", null: false
+    t.text "middle_name"
+    t.text "last_name", null: false
+    t.text "nickname"
+    t.text "credentials"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_users_on_company_id"
