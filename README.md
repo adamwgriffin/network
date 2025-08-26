@@ -1,24 +1,16 @@
-# README
+# Network
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A LinkedIn-style social media network service written with Ruby on Rails and GraphQL.
 
-Things you may want to cover:
+## Installation
 
-* Ruby version
+Requirements:
 
-* System dependencies
+- Ruby >= 3.4
+- Rails >= 8.0
 
-* Configuration
+Run `bundle` to install dependencies.
 
-* Database creation
+Run `rails db:setup` to create the database and seed it with dev data.
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Start it up with `rails server`
