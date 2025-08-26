@@ -26,6 +26,13 @@ class Connection < ApplicationRecord
       .where(status: "accepted")
   end
 
+  def self.send_connection_request(requester_id, recipient_id)
+    raise "Cannot connect a user to themselves" if requester_id == recipient_id
+    existing_connection = self.for_users(requester_id, recipient_id).exists?
+    raise "Connection already exists" if existing_connection
+    Connection.create!(requester_id: requester_id, recipient_id: recipient_id)
+  end
+
   # You can pass either a user id or a user model as arguments
   def self.accept_request(requester, recipient)
     self
