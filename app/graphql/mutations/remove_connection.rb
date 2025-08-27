@@ -6,14 +6,14 @@ module Mutations
     argument :user_b_id, ID, required: true
 
     field :success, Boolean, null: false
-    field :errors, [ String ], null: false
+    field :errors, [String], null: false
 
     def resolve(user_a_id:, user_b_id:)
       begin
         Connection.remove_connection(user_a_id, user_b_id)
         { success: true, errors: [] }
       rescue => e
-        { success: false, errors: [ e.message ] }
+        { success: false, errors: [e.message] }
       end
     end
   end

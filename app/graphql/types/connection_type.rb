@@ -8,7 +8,6 @@ module Types
     field :status, String, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-
     field :requester, Types::UserType, null: false do
       description "The user who sent the connection request"
     end

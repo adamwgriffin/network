@@ -11,9 +11,9 @@ module Types
       context.schema.object_from_id(id, context)
     end
 
-    field :nodes, [ Types::NodeType, null: true ], null: true do
+    field :nodes, [Types::NodeType, null: true], null: true do
       description "Fetches a list of objects given a list of IDs."
-      argument :ids, [ ID ], required: true, description: "IDs of the objects."
+      argument :ids, [ID], required: true, description: "IDs of the objects."
     end
 
     def nodes(ids:)

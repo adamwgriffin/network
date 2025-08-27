@@ -6,7 +6,7 @@ module Types
     field :name, String, null: false
     field :headquarters, String, null: false
     field :description, String, null: true
-    field :users, [ Types::UserType ], null: true
+    field :users, [Types::UserType], null: true
 
     def users
       object.users

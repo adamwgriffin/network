@@ -13,7 +13,7 @@ class User < ApplicationRecord
     # Get all the user ids, removing this user from the array
     user_ids = Connection
       .user_connections(self)
-      .pluck(:requester_id, :recipient_id).flatten - [ id ]
+      .pluck(:requester_id, :recipient_id).flatten - [id]
     User.where(id: user_ids)
   end
 

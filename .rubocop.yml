@@ -8,3 +8,5 @@ Layout/IndentationWidth:
 Layout/SpaceAroundOperators:
   Enabled: true
 
+Layout/SpaceInsideArrayLiteralBrackets:
+  EnforcedStyle: no_space
