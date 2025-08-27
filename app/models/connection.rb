@@ -34,10 +34,10 @@ class Connection < ApplicationRecord
   end
 
   # You can pass either a user id or a user model as arguments
-  def self.accept_request(requester, recipient)
-    self
-      .find_by!(requester: requester, recipient: recipient, status: "pending")
-      .update!(status: "accepted")
+  def self.accept_request(connection_id)
+    connection = self.find(connection_id)
+    raise "Request is not pending" if connection.status != "pending"
+    connection.update!(status: "accepted")
   end
 
   def self.decline_request(requester, recipient)
