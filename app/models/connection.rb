@@ -40,10 +40,10 @@ class Connection < ApplicationRecord
     connection.update!(status: "accepted")
   end
 
-  def self.decline_request(requester, recipient)
-    self
-      .find_by!(requester: requester, recipient: recipient, status: "pending")
-      .update!(status: "declined")
+  def self.decline_request(connection_id)
+    connection = self.find(connection_id)
+    raise "Request is not pending" if connection.status != "pending"
+    connection.update!(status: "declined")
   end
 
   def self.remove_connection(user_a, user_b)
