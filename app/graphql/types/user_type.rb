@@ -22,10 +22,6 @@ module Types
       description "Pending connection requests received by this user"
     end
 
-    def connections
-      object.connections
-    end
-
     def pending_sent_requests
       object.pending_sent_requests.includes(:recipient)
     end

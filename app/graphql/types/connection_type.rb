@@ -14,13 +14,5 @@ module Types
     field :recipient, Types::UserType, null: false do
       description "The user who received the connection request"
     end
-
-    def requester
-      object.requester
-    end
-
-    def recipient
-      object.recipient
-    end
   end
 end
