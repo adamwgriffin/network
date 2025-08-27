@@ -15,11 +15,11 @@ module Types
     field :connections, [ Types::UserType ], null: true do
       description "All accepted connections for this user"
     end
-    field :pending_sent_requests, [ Types::UserType ], null: true do
-      description "Users this user has sent a pending connection request to"
+    field :pending_sent_requests, [ Types::ConnectionType ], null: true do
+      description "Pending connection requests sent by this user"
     end
-    field :pending_received_requests, [ Types::UserType ], null: true do
-      description "Users who have sent a pending connection request to this user"
+    field :pending_received_requests, [ Types::ConnectionType ], null: true do
+      description "Pending connection requests received by this user"
     end
 
     def connections
@@ -27,11 +27,11 @@ module Types
     end
 
     def pending_sent_requests
-      object.pending_sent_requests
+      object.pending_sent_requests.includes(:recipient)
     end
 
     def pending_received_requests
-      object.pending_received_requests
+      object.pending_received_requests.includes(:requester)
     end
   end
 end

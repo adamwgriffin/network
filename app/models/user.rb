@@ -18,10 +18,10 @@ class User < ApplicationRecord
   end
 
   def pending_sent_requests
-    sent_connections.pending.includes(:recipient).map(&:recipient)
+    sent_connections.pending
   end
 
   def pending_received_requests
-    received_connections.pending.includes(:requester).map(&:requester)
+    received_connections.pending
   end
 end
