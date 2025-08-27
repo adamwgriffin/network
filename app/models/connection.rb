@@ -46,10 +46,8 @@ class Connection < ApplicationRecord
     connection.update!(status: "declined")
   end
 
-  def self.remove_connection(user_a, user_b)
-    self.for_users(user_a, user_b)
-      .take!
-      .destroy!
+  def self.remove_connection(connection_id)
+    self.find(connection_id)&.destroy!
   end
 
   private
