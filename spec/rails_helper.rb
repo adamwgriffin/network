@@ -69,4 +69,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Provides a set of convenience methods for generating test data like create,
+  # build, etc.
+  RSpec.configure do |config|
+    config.include FactoryBot::Syntax::Methods
+  end
 end
