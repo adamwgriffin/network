@@ -45,4 +45,19 @@ RSpec.describe Connection, type: :model do
       }.to raise_error("Request is not pending")
     end
   end
+
+  describe "#decline_request" do
+    it "declines a pending connection request" do
+      pending_connection = create(:connection, requester: house, recipient: wilson, status: "pending")
+      Connection.decline_request(pending_connection.id)
+      expect(pending_connection.reload.status).to eq("declined")
+    end
+
+    it "raises an error if the request is not pending" do
+      declined_connection = create(:connection, requester: house, recipient: cameron, status: "declined")
+      expect {
+        Connection.decline_request(declined_connection.id)
+      }.to raise_error("Request is not pending")
+    end
+  end
 end
