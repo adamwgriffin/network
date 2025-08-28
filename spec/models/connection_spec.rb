@@ -5,6 +5,17 @@ RSpec.describe Connection, type: :model do
   let(:wilson)  { create(:wilson) }
   let(:cameron) { create(:cameron) }
 
+  describe "validation" do
+    describe "users_are_different" do
+      it "is invalid if requester and recipient are the same user" do
+        user = create(:house)
+        connection = build(:connection, requester: user, recipient: user)
+        expect(connection).not_to be_valid
+        expect(connection.errors[:recipient_id]).to include("can't be the same as requester")
+      end
+    end
+  end
+
   describe "#send_connection_request" do
     it "creates a new connection with pending status" do
       connection = Connection.send_connection_request(house.id, wilson.id)
