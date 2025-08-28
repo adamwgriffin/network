@@ -60,4 +60,13 @@ RSpec.describe Connection, type: :model do
       }.to raise_error("Request is not pending")
     end
   end
+
+  describe "#remove_connection" do
+    it "removes the connection from the database" do
+      connection = create(:connection, requester: house, recipient: wilson, status: "accepted")
+      expect {
+        Connection.remove_connection(connection.id)
+      }.to change { Connection.exists?(connection.id) }.from(true).to(false)
+    end
+  end
 end
