@@ -14,13 +14,14 @@ class Connection < ApplicationRecord
   scope :accepted, -> { where(status: "accepted") }
   scope :declined, -> { where(status: "declined") }
   scope :blocked, -> { where(status: "blocked") }
-  scope :for_users, ->(user_a, user_b) {
+
+  scope :for_users, ->(user_a, user_b) do
     where(requester: user_a, recipient: user_b)
       .or(where(requester: user_b, recipient: user_a))
-  }
+  end
 
   # Find all accepted connection requests for a user
-  def self.user_connections(user)
+  scope :user_connections, ->(user) do
     where(requester: user)
       .or(where(recipient: user))
       .where(status: "accepted")
