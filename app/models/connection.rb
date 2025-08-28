@@ -33,7 +33,6 @@ class Connection < ApplicationRecord
     Connection.create!(requester_id: requester_id, recipient_id: recipient_id)
   end
 
-  # You can pass either a user id or a user model as arguments
   def self.accept_request(connection_id)
     connection = self.find(connection_id)
     raise "Request is not pending" if connection.status != "pending"
