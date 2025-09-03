@@ -13,4 +13,8 @@ Run `bundle` to install dependencies.
 
 Run `bin/rails db:setup` to create the database and seed it with dev data.
 
+## Dev
+
 Start it up with `bin/rails server`
+
+Run tests with `bin/rspec`
