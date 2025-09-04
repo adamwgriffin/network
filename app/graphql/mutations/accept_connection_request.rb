@@ -2,13 +2,13 @@
 
 module Mutations
   class AcceptConnectionRequest < Mutations::BaseMutation
-    argument :connection_id, ID, required: true
+    argument :connection_request_id, ID, required: true
 
     field :success, Boolean, null: false
     field :errors, [String], null: false
 
-    def resolve(connection_id:)
-      Connection.accept_request(connection_id)
+    def resolve(connection_request_id:)
+      ConnectionRequest.find(connection_request_id).accept
       { success: true, errors: [] }
     rescue => e
       { success: false, errors: [e.message] }

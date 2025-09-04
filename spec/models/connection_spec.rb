@@ -3,81 +3,34 @@ require 'rails_helper'
 RSpec.describe Connection, type: :model do
   let(:house) { create(:house) }
   let(:wilson)  { create(:wilson) }
-  let(:cameron) { create(:cameron) }
 
   describe "validation" do
     describe "users_are_different" do
       it "is invalid if requester and recipient are the same user" do
-        user = create(:house)
-        connection = build(:connection, requester: user, recipient: user)
+        connection = build(:connection, user: house, connected_user: house)
         expect(connection).not_to be_valid
-        expect(connection.errors[:recipient_id]).to include("can't be the same as requester")
+        expect(connection.errors[:connected_user_id]).to include("can't be same as user")
       end
     end
   end
 
-  describe "#send_connection_request" do
-    it "creates a new connection with pending status" do
-      connection = Connection.send_connection_request(house.id, wilson.id)
-      expect(connection).to be_persisted
-      expect(connection.requester).to eq(house)
-      expect(connection.recipient).to eq(wilson)
-      expect(connection.status).to eq("pending")
-    end
+  describe "#connect" do
+    it "creates two mutual connection records" do
+      Connection.connect(house.id, wilson.id)
 
-    it "raises an error if requester and recipient are the same" do
-      expect {
-        Connection.send_connection_request(house.id, house.id)
-      }.to raise_error("Cannot connect a user to themselves")
-    end
-
-    it "raises an error if a connection already exists between users" do
-      Connection.send_connection_request(house.id, wilson.id)
-      expect {
-        Connection.send_connection_request(house.id, wilson.id)
-      }.to raise_error("Connection already exists")
-      expect {
-        Connection.send_connection_request(wilson.id, house.id)
-      }.to raise_error("Connection already exists")
+      expect(Connection.exists?(user_id: house.id, connected_user_id: wilson.id)).to eq(true)
+      expect(Connection.exists?(user_id: wilson.id, connected_user_id: house.id)).to eq(true)
     end
   end
 
-  describe "#accept_request" do
-    it "accepts a pending connection request" do
-      pending_connection = create(:connection, requester: house, recipient: wilson, status: "pending")
-      Connection.accept_request(pending_connection.id)
-      expect(pending_connection.reload.status).to eq("accepted")
-    end
+  describe "#disconnect" do
+    it "removes the connections between two users" do
+      connection_one = create(:connection, user: house, connected_user: wilson)
+      connection_two = create(:connection, user: wilson, connected_user: house)
+      Connection.disconnect(house.id, wilson.id)
 
-    it "raises an error if the request is not pending" do
-      accepted_connection = create(:connection, requester: house, recipient: cameron, status: "accepted")
-      expect {
-        Connection.accept_request(accepted_connection.id)
-      }.to raise_error("Request is not pending")
-    end
-  end
-
-  describe "#decline_request" do
-    it "declines a pending connection request" do
-      pending_connection = create(:connection, requester: house, recipient: wilson, status: "pending")
-      Connection.decline_request(pending_connection.id)
-      expect(pending_connection.reload.status).to eq("declined")
-    end
-
-    it "raises an error if the request is not pending" do
-      declined_connection = create(:connection, requester: house, recipient: cameron, status: "declined")
-      expect {
-        Connection.decline_request(declined_connection.id)
-      }.to raise_error("Request is not pending")
-    end
-  end
-
-  describe "#remove_connection" do
-    it "removes the connection from the database" do
-      connection = create(:connection, requester: house, recipient: wilson, status: "accepted")
-      expect {
-        Connection.remove_connection(connection.id)
-      }.to change { Connection.exists?(connection.id) }.from(true).to(false)
+      expect(Connection.exists?(connection_one.id)).to eq(false)
+      expect(Connection.exists?(connection_two.id)).to eq(false)
     end
   end
 end

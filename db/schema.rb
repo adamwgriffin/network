@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_25_005509) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_04_034455) do
   create_table "companies", force: :cascade do |t|
     t.text "name", null: false
     t.text "headquarters", null: false
@@ -19,16 +19,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_25_005509) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "connections", force: :cascade do |t|
-    t.integer "requester_id", null: false
-    t.integer "recipient_id", null: false
+  create_table "connection_requests", force: :cascade do |t|
+    t.integer "sender_id", null: false
+    t.integer "receiver_id", null: false
     t.string "status", default: "pending", null: false
+    t.datetime "responded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["recipient_id"], name: "index_connections_on_recipient_id"
-    t.index ["requester_id", "recipient_id"], name: "index_connections_on_requester_id_and_recipient_id", unique: true
-    t.index ["requester_id"], name: "index_connections_on_requester_id"
-    t.index ["status"], name: "index_connections_on_status"
+    t.index ["receiver_id"], name: "index_connection_requests_on_receiver_id"
+    t.index ["sender_id", "receiver_id"], name: "index_connection_requests_on_sender_id_and_receiver_id", unique: true
+    t.index ["sender_id"], name: "index_connection_requests_on_sender_id"
+  end
+
+  create_table "connections", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "connected_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["connected_user_id"], name: "index_connections_on_connected_user_id"
+    t.index ["user_id", "connected_user_id"], name: "index_connections_on_user_id_and_connected_user_id", unique: true
+    t.index ["user_id"], name: "index_connections_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -43,7 +53,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_25_005509) do
     t.index ["company_id"], name: "index_users_on_company_id"
   end
 
-  add_foreign_key "connections", "users", column: "recipient_id"
-  add_foreign_key "connections", "users", column: "requester_id"
+  add_foreign_key "connection_requests", "users", column: "receiver_id"
+  add_foreign_key "connection_requests", "users", column: "sender_id"
+  add_foreign_key "connections", "users"
+  add_foreign_key "connections", "users", column: "connected_user_id"
   add_foreign_key "users", "companies"
 end

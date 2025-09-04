@@ -2,14 +2,14 @@
 
 module Mutations
   class SendConnectionRequest < Mutations::BaseMutation
-    argument :requester_id, ID, required: true
-    argument :recipient_id, ID, required: true
+    argument :sender_id, ID, required: true
+    argument :receiver_id, ID, required: true
 
     field :success, Boolean, null: false
     field :errors, [String], null: false
 
-    def resolve(requester_id:, recipient_id:)
-      Connection.send_connection_request(requester_id, recipient_id)
+    def resolve(sender_id:, receiver_id:)
+      ConnectionRequest.create!(sender_id: sender_id, receiver_id: receiver_id)
       { success: true, errors: [] }
     rescue => e
       { success: false, errors: [e.message] }

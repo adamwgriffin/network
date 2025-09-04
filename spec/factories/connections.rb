@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :connection do
-    association :requester, factory: :house
-    association :recipient, factory: :wilson
-    status { "accepted" }
+    association :user, factory: :house
+    association :connected_user, factory: :wilson
   end
 end
