@@ -9,4 +9,12 @@ class User < ApplicationRecord
 
   validates :first_name, presence: true
   validates :last_name, presence: true
+
+  def pending_sent_requests
+    sent_connection_requests.pending
+  end
+
+  def pending_received_requests
+    received_connection_requests.pending
+  end
 end
