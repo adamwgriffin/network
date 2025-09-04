@@ -14,13 +14,14 @@ class Connection < ApplicationRecord
   scope :accepted, -> { where(status: "accepted") }
   scope :declined, -> { where(status: "declined") }
   scope :blocked, -> { where(status: "blocked") }
-  scope :for_users, ->(user_a, user_b) {
+
+  scope :for_users, ->(user_a, user_b) do
     where(requester: user_a, recipient: user_b)
       .or(where(requester: user_b, recipient: user_a))
-  }
+  end
 
   # Find all accepted connection requests for a user
-  def self.user_connections(user)
+  scope :user_connections, ->(user) do
     where(requester: user)
       .or(where(recipient: user))
       .where(status: "accepted")
@@ -33,7 +34,6 @@ class Connection < ApplicationRecord
     Connection.create!(requester_id: requester_id, recipient_id: recipient_id)
   end
 
-  # You can pass either a user id or a user model as arguments
   def self.accept_request(connection_id)
     connection = self.find(connection_id)
     raise "Request is not pending" if connection.status != "pending"
