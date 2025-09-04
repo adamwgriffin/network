@@ -20,13 +20,6 @@ class Connection < ApplicationRecord
       .or(where(requester: user_b, recipient: user_a))
   end
 
-  # Find all accepted connection requests for a user
-  scope :user_connections, ->(user) do
-    where(requester: user)
-      .or(where(recipient: user))
-      .where(status: "accepted")
-  end
-
   def self.send_connection_request(requester_id, recipient_id)
     raise "Cannot connect a user to themselves" if requester_id == recipient_id
     existing_connection = self.for_users(requester_id, recipient_id).exists?

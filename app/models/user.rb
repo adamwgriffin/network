@@ -10,11 +10,16 @@ class User < ApplicationRecord
   validates :last_name, presence: true
 
   def connections
-    # Get all the user ids, removing this user from the array
-    user_ids = Connection
-      .user_connections(self)
-      .pluck(:requester_id, :recipient_id).flatten - [id]
-    User.where(id: user_ids)
+    User.joins(
+      "JOIN connections ON users.id = connections.requester_id OR users.id = connections.recipient_id"
+    )
+    .where(
+      "connections.requester_id = :id OR connections.recipient_id = :id",
+      id: self.id
+    )
+    .where("connections.status = 'accepted'")
+    .where.not(id: self.id)
+    .distinct
   end
 
   def pending_sent_requests
