@@ -1,58 +1,35 @@
 # frozen_string_literal: true
 
 class Connection < ApplicationRecord
-  STATUSES = %w[pending accepted declined blocked].freeze
+  belongs_to :user
+  belongs_to :connected_user, class_name: "User"
 
-  belongs_to :requester, class_name: "User"
-  belongs_to :recipient, class_name: "User"
-
-  validates :requester_id, uniqueness: { scope: :recipient_id }
-  validates :status, inclusion: { in: STATUSES }
+  # Makes sure the specific user_id -> connected_user_id combo is unique
+  validates :user_id, uniqueness: { scope: :connected_user_id }
   validate :users_are_different
 
-  scope :pending, -> { where(status: "pending") }
-  scope :accepted, -> { where(status: "accepted") }
-  scope :declined, -> { where(status: "declined") }
-  scope :blocked, -> { where(status: "blocked") }
-
-  scope :for_users, ->(user_a, user_b) do
-    where(requester: user_a, recipient: user_b)
-      .or(where(requester: user_b, recipient: user_a))
+  # Create a mutual connection between two users. We create two records: one for
+  # each user. This takes up more space but it makes queries for user
+  # connections a lot less complex. Having tried using only one record
+  # previously, I decided the tradeoff could be worthwhile in the long run.
+  def self.connect(user_id_1, user_id_2)
+    transaction do
+      create!(user_id: user_id_1, connected_user_id: user_id_2)
+      create!(user_id: user_id_2, connected_user_id: user_id_1)
+    end
   end
 
-  # Find all accepted connection requests for a user
-  scope :user_connections, ->(user) do
-    where(requester: user)
-      .or(where(recipient: user))
-      .where(status: "accepted")
-  end
-
-  def self.send_connection_request(requester_id, recipient_id)
-    raise "Cannot connect a user to themselves" if requester_id == recipient_id
-    existing_connection = self.for_users(requester_id, recipient_id).exists?
-    raise "Connection already exists" if existing_connection
-    Connection.create!(requester_id: requester_id, recipient_id: recipient_id)
-  end
-
-  def self.accept_request(connection_id)
-    connection = self.find(connection_id)
-    raise "Request is not pending" if connection.status != "pending"
-    connection.update!(status: "accepted")
-  end
-
-  def self.decline_request(connection_id)
-    connection = self.find(connection_id)
-    raise "Request is not pending" if connection.status != "pending"
-    connection.update!(status: "declined")
-  end
-
-  def self.remove_connection(connection_id)
-    self.find(connection_id)&.destroy!
+  # Remove a mutual connection between two users
+  def self.disconnect(user_id_1, user_id_2)
+    transaction do
+      find_by!(user_id: user_id_1, connected_user_id: user_id_2).destroy!
+      find_by!(user_id: user_id_2, connected_user_id: user_id_1).destroy!
+    end
   end
 
   private
 
     def users_are_different
-      errors.add(:recipient_id, "can't be the same as requester") if requester_id == recipient_id
+      errors.add(:connected_user_id, "can't be same as user") if user_id == connected_user_id
     end
 end
