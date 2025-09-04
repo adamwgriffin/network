@@ -8,6 +8,8 @@ class Connection < ApplicationRecord
   validates :user_id, uniqueness: { scope: :connected_user_id }
   validate :users_are_different
 
+  # TODO: Optimize these two queries for connect and disconnect
+
   # Create a mutual connection between two users. We create two records: one for
   # each user. This takes up more space but it makes queries for user
   # connections a lot less complex. Having tried using only one record
