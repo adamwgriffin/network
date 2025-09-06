@@ -2,9 +2,12 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  runtimeConfig: {
-    public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE
+  nitro: {
+    devProxy: {
+      "/api": {
+        target: "http://localhost:4000",
+        changeOrigin: true
+      }
     }
   },
   modules: ["@nuxt/eslint", "@nuxt/image", "@nuxt/test-utils", "@nuxt/ui"]
