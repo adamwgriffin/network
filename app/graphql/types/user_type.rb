@@ -21,13 +21,5 @@ module Types
     field :pending_received_requests, [Types::ConnectionType], null: true do
       description "Pending connection requests received by this user"
     end
-
-    def pending_sent_requests
-      object.pending_sent_requests.includes(:recipient)
-    end
-
-    def pending_received_requests
-      object.pending_received_requests.includes(:requester)
-    end
   end
 end
