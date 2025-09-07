@@ -1,26 +1,10 @@
 <template>
-  <div>
+  <div class="min-h-screen grid grid-rows-[auto_1fr_auto] max-w-4xl mx-auto">
     <NuxtRouteAnnouncer />
-    <hi>User:</hi>
-    <p>{{ (data as any)?.user.firstName }}</p>
+    <div>
+      <div class="p-6">
+        <NuxtPage />
+      </div>
+    </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-const query = gql`
-  query User {
-    user(id: 6) {
-      id
-      firstName
-      lastName
-      credentials
-      company {
-        id
-        name
-      }
-    }
-  }
-`;
-
-const { data } = await useAsyncQuery(query);
-</script>
