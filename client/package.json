@@ -7,7 +7,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "codegen": "bunx graphql-codegen"
   },
   "dependencies": {
     "@nuxt/eslint": "1.9.0",
@@ -21,6 +22,10 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-operations": "^4.6.1",
+    "@graphql-codegen/typescript-vue-apollo": "^4.1.2",
     "@nuxtjs/apollo": "^5.0.0-alpha.15",
     "@types/node": "^24.3.1"
   }
