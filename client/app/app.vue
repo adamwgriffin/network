@@ -1,10 +1,8 @@
 <template>
-  <div class="min-h-screen grid grid-rows-[auto_1fr_auto] max-w-4xl mx-auto">
+  <UApp>
     <NuxtRouteAnnouncer />
-    <div>
-      <div class="p-6">
-        <NuxtPage />
-      </div>
+    <div class="p-72">
+      <NuxtPage />
     </div>
-  </div>
+  </UApp>
 </template>
