@@ -10,5 +10,18 @@ export default defineNuxtConfig({
       }
     }
   },
-  modules: ["@nuxt/eslint", "@nuxt/image", "@nuxt/test-utils", "@nuxt/ui"]
+  apollo: {
+    clients: {
+      default: {
+        httpEndpoint: "/api/graphql"
+      }
+    }
+  },
+  modules: [
+    "@nuxt/eslint",
+    "@nuxt/image",
+    "@nuxt/test-utils",
+    "@nuxt/ui",
+    "@nuxtjs/apollo"
+  ]
 });
