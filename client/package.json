@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "codegen": "bunx graphql-codegen"
+    "codegen": "bunx graphql-codegen --config graphql/codegenConfig.ts"
   },
   "dependencies": {
     "@nuxt/eslint": "1.9.0",
