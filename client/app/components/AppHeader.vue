@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-end gap-12 p-6">
+  <header class="flex items-end gap-24 p-6">
     <NuxtLink to="/">
       <h1 class="text-3xl font-bold">Network 🧑‍⚕️👩‍⚕️</h1>
       <p>The ultimate doctors network&trade;</p>
@@ -11,6 +11,9 @@
         </li>
         <li>
           <NavLink icon-name="lucide:users" to="/mynetwork">My Network</NavLink>
+        </li>
+        <li>
+          <UserMenu />
         </li>
       </ul>
     </nav>

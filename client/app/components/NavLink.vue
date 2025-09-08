@@ -4,7 +4,7 @@ defineProps<{ iconName: string; to: string }>();
 
 <template>
   <NuxtLink :to="to" class="flex flex-col content-center items-center">
-    <UIcon :name="iconName" class="size-5" />
+    <UIcon :name="iconName" class="size-7" />
     <slot />
   </NuxtLink>
 </template>
