@@ -5,8 +5,14 @@
       <p>The ultimate doctors network&trade;</p>
     </NuxtLink>
     <nav>
-      <NuxtLink to="/">Home</NuxtLink> |
-      <NuxtLink to="/mynetwork">My Network</NuxtLink>
+      <ul class="flex gap-6">
+        <li>
+          <NavLink icon-name="lucide-lab:house" to="/">Home</NavLink>
+        </li>
+        <li>
+          <NavLink icon-name="lucide:users" to="/mynetwork">My Network</NavLink>
+        </li>
+      </ul>
     </nav>
   </header>
 </template>
