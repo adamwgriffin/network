@@ -13,7 +13,7 @@ const user = data.value?.user;
     <div>
       <div v-if="user">
         <h1>
-          {{ user.firstName }} {{ user.lastName }}, {{ user.credentials }}
+          {{ getFullNameAndCredentials(user) }}
         </h1>
         <p>{{ user.company.name }}</p>
       </div>

@@ -20,7 +20,7 @@ const edges =
     <ul>
       <li v-for="{ node } in edges" :key="node.id">
         <NuxtLink :to="`/users/${node.id}`">
-          <h2>{{ node.firstName }} {{ node.lastName }}</h2>
+          {{ getFullNameAndCredentials(node) }}
         </NuxtLink>
       </li>
     </ul>
