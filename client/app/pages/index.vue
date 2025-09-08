@@ -19,7 +19,9 @@ const edges =
     <p>The ultimate doctors network</p>
     <ul>
       <li v-for="{ node } in edges" :key="node.id">
-        <h2>{{ node.firstName }} {{ node.lastName }}</h2>
+        <NuxtLink :to="`/users/${node.id}`">
+          <h2>{{ node.firstName }} {{ node.lastName }}</h2>
+        </NuxtLink>
       </li>
     </ul>
     <p v-if="error">
