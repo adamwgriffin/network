@@ -1,0 +1,19 @@
+query GetUsers($first: Int = 10) {
+  users(first: $first) {
+    edges {
+      node {
+        id
+        firstName
+        lastName
+        credentials
+      }
+      cursor
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
