@@ -41,7 +41,16 @@ export type Company = {
   headquarters: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  users: Maybe<Array<User>>;
+  /** Return a paginated list of users */
+  users: UserConnection;
+};
+
+
+export type CompanyUsersArgs = {
+  after: InputMaybe<Scalars['String']['input']>;
+  before: InputMaybe<Scalars['String']['input']>;
+  first: InputMaybe<Scalars['Int']['input']>;
+  last: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** The connection type for Company. */
@@ -245,6 +254,15 @@ export type UserEdge = {
   node: Maybe<User>;
 };
 
+export type GetCompanyQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+  first?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetCompanyQuery = { __typename?: 'Query', company: { __typename?: 'Company', id: string, name: string, headquarters: string, description: string | null, users: { __typename?: 'UserConnection', edges: Array<{ __typename?: 'UserEdge', cursor: string, node: { __typename?: 'User', id: string, firstName: string, lastName: string, credentials: string | null } | null } | null> | null, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor: string | null, endCursor: string | null } } } | null };
+
 export type GetUserQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -260,6 +278,58 @@ export type GetUsersQueryVariables = Exact<{
 export type GetUsersQuery = { __typename?: 'Query', users: { __typename?: 'UserConnection', edges: Array<{ __typename?: 'UserEdge', cursor: string, node: { __typename?: 'User', id: string, firstName: string, lastName: string, credentials: string | null } | null } | null> | null, pageInfo: { __typename?: 'PageInfo', startCursor: string | null, endCursor: string | null, hasNextPage: boolean, hasPreviousPage: boolean } } };
 
 
+export const GetCompanyDocument = gql`
+    query GetCompany($id: ID!, $first: Int = 10, $after: String = null) {
+  company(id: $id) {
+    id
+    name
+    headquarters
+    description
+    users(first: $first, after: $after) {
+      edges {
+        node {
+          id
+          firstName
+          lastName
+          credentials
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCompanyQuery__
+ *
+ * To run a query within a Vue component, call `useGetCompanyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCompanyQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetCompanyQuery({
+ *   id: // value for 'id'
+ *   first: // value for 'first'
+ *   after: // value for 'after'
+ * });
+ */
+export function useGetCompanyQuery(variables: GetCompanyQueryVariables | VueCompositionApi.Ref<GetCompanyQueryVariables> | ReactiveFunction<GetCompanyQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetCompanyQuery, GetCompanyQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetCompanyQuery, GetCompanyQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetCompanyQuery, GetCompanyQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetCompanyQuery, GetCompanyQueryVariables>(GetCompanyDocument, variables, options);
+}
+export function useGetCompanyLazyQuery(variables?: GetCompanyQueryVariables | VueCompositionApi.Ref<GetCompanyQueryVariables> | ReactiveFunction<GetCompanyQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetCompanyQuery, GetCompanyQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetCompanyQuery, GetCompanyQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetCompanyQuery, GetCompanyQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetCompanyQuery, GetCompanyQueryVariables>(GetCompanyDocument, variables, options);
+}
+export type GetCompanyQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetCompanyQuery, GetCompanyQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser($id: ID!) {
   user(id: $id) {

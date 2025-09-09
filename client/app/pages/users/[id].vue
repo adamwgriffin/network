@@ -12,10 +12,14 @@ const user = data.value?.user;
   <div>
     <div>
       <div v-if="user">
-        <h1>
+        <h1 class="text-2xl font-bold pb-6">
           {{ getFullNameAndCredentials(user) }}
         </h1>
-        <p>{{ user.company.name }}</p>
+        <p>
+          <NuxtLink :to="`/companies/${user.company.id}`">
+            {{ user.company.name }}
+          </NuxtLink>
+        </p>
       </div>
       <p v-else-if="error">{{ error }}</p>
       <p v-else>No user data</p>
