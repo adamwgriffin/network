@@ -1,2 +1,5 @@
 #!/usr/bin/env ruby
-exec "./bin/rails", "server", *ARGV
+
+# Using -s flag so that Overmind doesn't store its socket file in the project
+# directory because I just find it sort of distracting to see it there.
+exec "./bin/overmind", "start", "-s", "/tmp/.overmind.sock", *ARGV
