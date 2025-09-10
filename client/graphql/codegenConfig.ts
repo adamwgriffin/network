@@ -30,7 +30,6 @@ const config: CodegenConfig = {
     // it does not do by default.
     vueCompositionApiImportFrom: "vue",
     withCompositionFunctions: true,
-    vueApolloComposableImportFrom: "@vue/apollo-composable",
     addDocBlocks: true
   }
 };
