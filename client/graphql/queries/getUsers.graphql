@@ -1,5 +1,5 @@
-query GetUsers($first: Int = 10) {
-  users(first: $first) {
+query GetUsers($first: Int = 10, $after: String = null) {
+  users(first: $first, after: $after) {
     edges {
       node {
         id

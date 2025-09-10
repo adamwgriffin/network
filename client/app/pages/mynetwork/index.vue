@@ -1,28 +1,61 @@
 <script lang="ts" setup>
 const queryVariables: GetUsersQueryVariables = { first: 5 };
-const { data, error } = await useAsyncQuery<GetUsersQuery>(
-  GetUsersDocument,
-  queryVariables
-);
-// The filter function with "is" defines a type predicate in order to assert
-// that nothing is null in the data. This way we don't have to constantly check
-// it inside the template
-const edges =
-  data.value?.users.edges?.filter(
-    (e): e is UserEdge & { node: User } => !!e && !!e.node
-  ) ?? [];
+const { result, fetchMore, error, loading } = useGetUsersQuery(queryVariables);
+
+function loadMore() {
+  fetchMore({
+    variables: {
+      ...queryVariables,
+      after: result.value?.users.pageInfo.endCursor
+    } satisfies GetUsersQueryVariables,
+    updateQuery: (previousResult, { fetchMoreResult }) => {
+      const newEdges = fetchMoreResult.users.edges ?? [];
+      const pageInfo = fetchMoreResult.users.pageInfo;
+
+      if (newEdges.length) {
+        const newResult: GetUsersQuery = {
+          ...previousResult,
+          ...{
+            users: {
+              // Concat edges
+              edges: [...(previousResult.users.edges ?? []), ...newEdges],
+              // Override with new pageInfo
+              pageInfo
+            }
+          }
+        };
+
+        return newResult;
+      }
+
+      return previousResult;
+    }
+  });
+}
 </script>
 
 <template>
   <div>
-    <h2 class="text-2xl font-bold pb-6">Cool Doctors to Add</h2>
+    <h2 class="text-2xl font-bold pb-6">Connect with some cool doctors 😎</h2>
     <ul class="space-y-4">
-      <li v-for="{ node } in edges" :key="node.id">
-        <NuxtLink :to="`/users/${node.id}`">
-          {{ getFullNameAndCredentials(node) }}
+      <li v-for="edge in result?.users.edges ?? []" :key="edge?.node?.id">
+        <NuxtLink :to="`/users/${edge?.node?.id}`">
+          {{ edge?.node && getFullNameAndCredentials(edge?.node) }}
         </NuxtLink>
       </li>
     </ul>
+    <UContainer class="py-6 text-center">
+      <UTooltip text="Load more">
+        <button
+          v-if="result?.users?.pageInfo?.hasNextPage"
+          :disabled="loading"
+          class="cursor-pointer"
+          @click="loadMore"
+        >
+          <UIcon name="lucide:circle-plus" class="size-6" />
+        </button>
+      </UTooltip>
+    </UContainer>
     <p v-if="error">
       {{ error }}
     </p>
