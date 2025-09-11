@@ -7,6 +7,8 @@ class User < ApplicationRecord
 
   has_many :sent_connections, class_name: "Connection", foreign_key: "requester_id", dependent: :destroy
   has_many :received_connections, class_name: "Connection", foreign_key: "recipient_id", dependent: :destroy
+  has_many :posts, dependent: :destroy
+  has_many :post_comments, dependent: :destroy
 
   validates :first_name, presence: true
   validates :last_name, presence: true
