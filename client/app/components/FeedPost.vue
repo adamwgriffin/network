@@ -15,7 +15,7 @@
     </p>
     <template #footer>
       <div class="flex items-center gap-6">
-        <FeedPostButton icon-name="lucide:thumbs-up">Link</FeedPostButton>
+        <FeedPostButton icon-name="lucide:thumbs-up">Like</FeedPostButton>
         <FeedPostButton icon-name="lucide:message-square-text">
           Comment
         </FeedPostButton>
