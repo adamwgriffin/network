@@ -3,7 +3,7 @@
     <NuxtLink to="/">
       <NetworkLogo class="fill-blue-400 dark:fill-blue-200" />
       <p class="pt-1 text-right text-xs text-blue-400 dark:text-blue-200">
-        The TV doctors network&trade;
+        The premier social network for TV doctors
       </p>
     </NuxtLink>
     <nav>
