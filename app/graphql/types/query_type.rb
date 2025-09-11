@@ -56,5 +56,7 @@ module Types
     def companies
       Company.all
     end
+
+    field :post, resolver: Resolvers::PostResolver
   end
 end

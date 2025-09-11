@@ -25,5 +25,8 @@ module Types
     field :pending_received_requests, [Types::ConnectionType], null: true do
       description "Pending connection requests received by this user"
     end
+    field :posts, [Types::PostType], null: true do
+      description "Network posts for this user"
+    end
   end
 end
