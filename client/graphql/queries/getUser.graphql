@@ -1,11 +1,11 @@
-query GetUser($id: ID!) {
-  user(id: $id) {
-    id
+query GetUser($slug: String!) {
+  user(slug: $slug) {
+    slug
     firstName
     lastName
     credentials
     company {
-      id
+      slug
       name
     }
   }
