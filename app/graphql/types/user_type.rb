@@ -2,8 +2,11 @@
 
 module Types
   class UserType < Types::BaseObject
+    description "A user of the social network"
     field :id, ID, null: false
-    field :slug, String, null: false
+    field :slug, String, null: false do
+      description "A slug ID to be used in an SEO-friendly URI"
+    end
     field :company_id, Integer, null: false
     field :first_name, String, null: false
     field :middle_name, String, null: true
