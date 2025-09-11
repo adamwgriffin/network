@@ -1,0 +1,25 @@
+query GetCompany($id: ID!, $first: Int = 10, $after: String = null) {
+  company(id: $id) {
+    id
+    name
+    headquarters
+    description
+    users(first: $first, after: $after) {
+      edges {
+        node {
+          id
+          firstName
+          lastName
+          credentials
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+}

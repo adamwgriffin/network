@@ -1,0 +1,33 @@
+{
+  "name": "network",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "codegen": "npx graphql-codegen --config graphql/codegenConfig.ts"
+  },
+  "dependencies": {
+    "@nuxt/eslint": "1.9.0",
+    "@nuxt/image": "1.11.0",
+    "@nuxt/test-utils": "3.19.2",
+    "@nuxt/ui": "3.3.3",
+    "@vue/apollo-composable": "^4.2.2",
+    "eslint": "^9.35.0",
+    "nuxt": "^4.1.1",
+    "typescript": "^5.9.2",
+    "vue": "^3.5.21",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^6.0.0",
+    "@graphql-codegen/typescript": "^5.0.0",
+    "@graphql-codegen/typescript-operations": "^5.0.0",
+    "@graphql-codegen/typescript-vue-apollo": "^4.1.2",
+    "@nuxtjs/apollo": "^5.0.0-alpha.15",
+    "@types/node": "^24.3.1"
+  }
+}
