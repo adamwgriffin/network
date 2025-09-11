@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const route = useRoute();
 const { data, error } = await useAsyncQuery<GetUserQuery>(GetUserDocument, {
-  slug: getSlug(route.params.slug)
+  slug: getRouteParam(route.params.slug)
 } satisfies GetUserQueryVariables);
 
 const user = computed(() => data.value?.user);

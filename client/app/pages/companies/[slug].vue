@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const route = useRoute();
 const { result, error } = useGetCompanyQuery({
-  slug: getSlug(route.params.slug)
+  slug: getRouteParam(route.params.slug)
 });
 
 const company = computed(() => result.value?.company);
