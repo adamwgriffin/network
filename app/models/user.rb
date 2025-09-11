@@ -13,18 +13,6 @@ class User < ApplicationRecord
 
   friendly_id :slug_candidates
 
-  # Fields used to generate the slug via the friendly_id method
-  def slug_candidates
-    [
-      [first_name, last_name]
-    ]
-  end
-
-  # Updates the slug if any of these conditions are true
-  def should_generate_new_friendly_id?
-    slug.blank? || first_name_changed? || last_name_changed?
-  end
-
   def connections
     User.joins(
       "JOIN connections ON users.id = connections.requester_id OR users.id = connections.recipient_id"
@@ -45,4 +33,18 @@ class User < ApplicationRecord
   def pending_received_requests
     received_connections.pending
   end
+
+  private
+
+    # Fields used to generate the slug via the friendly_id method
+    def slug_candidates
+      [
+        [first_name, last_name]
+      ]
+    end
+
+    # Updates the slug if any of these conditions are true
+    def should_generate_new_friendly_id?
+      slug.blank? || first_name_changed? || last_name_changed?
+    end
 end
