@@ -103,6 +103,8 @@ GEM
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
     fiber-storage (1.0.1)
+    friendly_id (5.5.1)
+      activerecord (>= 4.0.0)
     fugit (1.11.2)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -353,6 +355,7 @@ DEPENDENCIES
   brakeman
   debug
   factory_bot_rails
+  friendly_id (~> 5.5.0)
   graphql (~> 2.5)
   kamal
   overmind

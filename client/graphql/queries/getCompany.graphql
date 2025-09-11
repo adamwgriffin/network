@@ -1,13 +1,13 @@
-query GetCompany($id: ID!, $first: Int = 10, $after: String = null) {
-  company(id: $id) {
-    id
+query GetCompany($slug: String!, $first: Int = 10, $after: String = null) {
+  company(slug: $slug) {
+    slug
     name
     headquarters
     description
     users(first: $first, after: $after) {
       edges {
         node {
-          id
+          slug
           firstName
           lastName
           credentials

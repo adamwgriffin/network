@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { useRoute } from "vue-router";
-
 const route = useRoute();
 const { data, error } = await useAsyncQuery<GetUserQuery>(GetUserDocument, {
-  id: route.params.id
-});
-const user = data.value?.user;
+  slug: getSlug(route.params.slug)
+} satisfies GetUserQueryVariables);
+
+const user = computed(() => data.value?.user);
 </script>
 
 <template>
@@ -16,7 +15,7 @@ const user = data.value?.user;
           {{ getFullNameAndCredentials(user) }}
         </h1>
         <p>
-          <NuxtLink :to="`/companies/${user.company.id}`">
+          <NuxtLink :to="`/companies/${user.company.slug}`">
             {{ user.company.name }}
           </NuxtLink>
         </p>

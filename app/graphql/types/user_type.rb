@@ -3,6 +3,7 @@
 module Types
   class UserType < Types::BaseObject
     field :id, ID, null: false
+    field :slug, String, null: false
     field :company_id, Integer, null: false
     field :first_name, String, null: false
     field :middle_name, String, null: true

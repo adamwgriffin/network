@@ -24,21 +24,21 @@ module Types
     # They will be entry points for queries on your schema.
 
     field :user, Types::UserType, null: true do
-      description "Find a user by ID"
-      argument :id, ID, required: true
+      description "Find a user by slug"
+      argument :slug, String, required: true
     end
 
-    def user(id:)
-      User.find_by(id: id)
+    def user(slug:)
+      User.find(slug)
     end
 
     field :company, Types::CompanyType, null: true do
-      description "Find a company by ID"
-      argument :id, ID, required: true
+      description "Find a company by slug"
+      argument :slug, String, required: true
     end
 
-    def company(id:)
-      Company.find_by(id: id)
+    def company(slug:)
+      Company.find(slug)
     end
 
     field :users, Types::UserType.connection_type, null: false do

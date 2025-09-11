@@ -54,6 +54,7 @@ export type Company = {
   headquarters: Scalars["String"]["output"];
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
+  slug: Scalars["String"]["output"];
   /** Return a paginated list of users */
   users: UserConnection;
 };
@@ -156,9 +157,9 @@ export type Query = {
   __typename?: "Query";
   /** Return a paginated list of companies */
   companies: CompanyConnection;
-  /** Find a company by ID */
+  /** Find a company by slug */
   company: Maybe<Company>;
-  /** Find a user by ID */
+  /** Find a user by slug */
   user: Maybe<User>;
   /** Return a paginated list of users */
   users: UserConnection;
@@ -172,11 +173,11 @@ export type QueryCompaniesArgs = {
 };
 
 export type QueryCompanyArgs = {
-  id: Scalars["ID"]["input"];
+  slug: Scalars["String"]["input"];
 };
 
 export type QueryUserArgs = {
-  id: Scalars["ID"]["input"];
+  slug: Scalars["String"]["input"];
 };
 
 export type QueryUsersArgs = {
@@ -236,6 +237,7 @@ export type User = {
   pendingReceivedRequests: Maybe<Array<Connection>>;
   /** Pending connection requests sent by this user */
   pendingSentRequests: Maybe<Array<Connection>>;
+  slug: Scalars["String"]["output"];
 };
 
 /** The connection type for User. */
@@ -259,7 +261,7 @@ export type UserEdge = {
 };
 
 export type GetCompanyQueryVariables = Exact<{
-  id: Scalars["ID"]["input"];
+  slug: Scalars["String"]["input"];
   first?: InputMaybe<Scalars["Int"]["input"]>;
   after?: InputMaybe<Scalars["String"]["input"]>;
 }>;
@@ -268,7 +270,7 @@ export type GetCompanyQuery = {
   __typename?: "Query";
   company: {
     __typename?: "Company";
-    id: string;
+    slug: string;
     name: string;
     headquarters: string;
     description: string | null;
@@ -279,7 +281,7 @@ export type GetCompanyQuery = {
         cursor: string;
         node: {
           __typename?: "User";
-          id: string;
+          slug: string;
           firstName: string;
           lastName: string;
           credentials: string | null;
@@ -297,18 +299,18 @@ export type GetCompanyQuery = {
 };
 
 export type GetUserQueryVariables = Exact<{
-  id: Scalars["ID"]["input"];
+  slug: Scalars["String"]["input"];
 }>;
 
 export type GetUserQuery = {
   __typename?: "Query";
   user: {
     __typename?: "User";
-    id: string;
+    slug: string;
     firstName: string;
     lastName: string;
     credentials: string | null;
-    company: { __typename?: "Company"; id: string; name: string };
+    company: { __typename?: "Company"; slug: string; name: string };
   } | null;
 };
 
@@ -326,7 +328,7 @@ export type GetUsersQuery = {
       cursor: string;
       node: {
         __typename?: "User";
-        id: string;
+        slug: string;
         firstName: string;
         lastName: string;
         credentials: string | null;
@@ -343,16 +345,16 @@ export type GetUsersQuery = {
 };
 
 export const GetCompanyDocument = gql`
-  query GetCompany($id: ID!, $first: Int = 10, $after: String = null) {
-    company(id: $id) {
-      id
+  query GetCompany($slug: String!, $first: Int = 10, $after: String = null) {
+    company(slug: $slug) {
+      slug
       name
       headquarters
       description
       users(first: $first, after: $after) {
         edges {
           node {
-            id
+            slug
             firstName
             lastName
             credentials
@@ -382,7 +384,7 @@ export const GetCompanyDocument = gql`
  *
  * @example
  * const { result, loading, error } = useGetCompanyQuery({
- *   id: // value for 'id'
+ *   slug: // value for 'slug'
  *   first: // value for 'first'
  *   after: // value for 'after'
  * });
@@ -446,14 +448,14 @@ export function useGetCompanyLazyQuery(
 export type GetCompanyQueryCompositionFunctionResult =
   VueApolloComposable.UseQueryReturn<GetCompanyQuery, GetCompanyQueryVariables>;
 export const GetUserDocument = gql`
-  query GetUser($id: ID!) {
-    user(id: $id) {
-      id
+  query GetUser($slug: String!) {
+    user(slug: $slug) {
+      slug
       firstName
       lastName
       credentials
       company {
-        id
+        slug
         name
       }
     }
@@ -463,16 +465,18 @@ export const GetUserDocument = gql`
 /**
  * __useGetUserQuery__
  *
- * To run a query within a Vue component, call `useGetUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
+ * To run a query within a Vue component, call `useGetUserQuery` and pass it any
+ * options that fit your needs. When your component renders, `useGetUserQuery`
+ * returns an object from Apollo Client that contains result, loading and error
+ * properties you can use to render your UI.
  *
  * @param variables that will be passed into the query
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ * @param options that will be passed into the query, supported options are
+ * listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
  *
  * @example
  * const { result, loading, error } = useGetUserQuery({
- *   id: // value for 'id'
+ *   slug: // value for 'slug'
  * });
  */
 export function useGetUserQuery(
@@ -522,7 +526,7 @@ export const GetUsersDocument = gql`
     users(first: $first, after: $after) {
       edges {
         node {
-          id
+          slug
           firstName
           lastName
           credentials
@@ -542,12 +546,14 @@ export const GetUsersDocument = gql`
 /**
  * __useGetUsersQuery__
  *
- * To run a query within a Vue component, call `useGetUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
+ * To run a query within a Vue component, call `useGetUsersQuery` and pass it
+ * any options that fit your needs. When your component renders,
+ * `useGetUsersQuery` returns an object from Apollo Client that contains result,
+ * loading and error properties you can use to render your UI.
  *
  * @param variables that will be passed into the query
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ * @param options that will be passed into the query, supported options are
+ * listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
  *
  * @example
  * const { result, loading, error } = useGetUsersQuery({

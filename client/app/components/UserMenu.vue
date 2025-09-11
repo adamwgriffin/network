@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from "@nuxt/ui";
 
+// TODO: the View Profile href should be dynamic based on logged in user
 const items = ref<DropdownMenuItem[]>([
   {
     label: "View Profile",
     icon: "i-lucide-user",
-    href: "/users/6"
+    href: "/users/gregory-house"
   },
   {
     label: "Settings",

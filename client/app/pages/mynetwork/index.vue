@@ -38,9 +38,9 @@ function loadMore() {
   <div>
     <h2 class="text-2xl font-bold pb-6">Connect with some cool doctors 😎</h2>
     <ul class="space-y-4">
-      <li v-for="edge in result?.users.edges ?? []" :key="edge?.node?.id">
-        <NuxtLink :to="`/users/${edge?.node?.id}`">
-          {{ edge?.node && getFullNameAndCredentials(edge?.node) }}
+      <li v-for="edge in result?.users.edges ?? []" :key="edge?.node?.slug">
+        <NuxtLink :to="`/users/${edge?.node?.slug}`">
+          {{ edge?.node && getFullNameAndCredentials(edge.node) }}
         </NuxtLink>
       </li>
     </ul>

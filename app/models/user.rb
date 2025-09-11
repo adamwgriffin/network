@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  extend FriendlyId
+
   belongs_to :company
 
   has_many :sent_connections, class_name: "Connection", foreign_key: "requester_id", dependent: :destroy
@@ -8,6 +10,20 @@ class User < ApplicationRecord
 
   validates :first_name, presence: true
   validates :last_name, presence: true
+
+  friendly_id :slug_candidates
+
+  # Fields used to generate the slug via the friendly_id method
+  def slug_candidates
+    [
+      [first_name, last_name]
+    ]
+  end
+
+  # Updates the slug if any of these conditions are true
+  def should_generate_new_friendly_id?
+    slug.blank? || first_name_changed? || last_name_changed?
+  end
 
   def connections
     User.joins(
