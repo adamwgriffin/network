@@ -2,10 +2,8 @@
   <header class="flex items-end gap-24 p-6">
     <NuxtLink to="/">
       <NetworkLogo class="fill-blue-400 dark:fill-blue-200" />
-      <p
-        class="pt-1 text-right text-xs italic text-blue-400 dark:text-blue-200"
-      >
-        The ultimate doctors network&trade;
+      <p class="pt-1 text-right text-xs text-blue-400 dark:text-blue-200">
+        The TV doctors network&trade;
       </p>
     </NuxtLink>
     <nav>
