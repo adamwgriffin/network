@@ -29,7 +29,7 @@ module Types
     end
 
     def user(slug:)
-      User.find(slug)
+      User.friendly.find(slug)
     end
 
     field :company, Types::CompanyType, null: true do
@@ -38,7 +38,7 @@ module Types
     end
 
     def company(slug:)
-      Company.find(slug)
+      Company.friendly.find(slug)
     end
 
     field :users, Types::UserType.connection_type, null: false do
