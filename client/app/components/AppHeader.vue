@@ -1,8 +1,12 @@
 <template>
   <header class="flex items-end gap-24 p-6">
     <NuxtLink to="/">
-      <h1 class="text-3xl font-bold">Network 🧑‍⚕️👩‍⚕️</h1>
-      <p>The ultimate doctors network&trade;</p>
+      <NetworkLogo class="fill-blue-400 dark:fill-blue-200" />
+      <p
+        class="pt-1 text-right text-xs italic text-blue-400 dark:text-blue-200"
+      >
+        The ultimate doctors network&trade;
+      </p>
     </NuxtLink>
     <nav>
       <ul class="flex gap-6">
