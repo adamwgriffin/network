@@ -1,0 +1,13 @@
+query GetPost($id: ID!) {
+  post(id: $id) {
+    body
+    createdAt
+    updatedAt
+    user {
+      slug
+      firstName
+      lastName
+      credentials
+    }
+  }
+}
