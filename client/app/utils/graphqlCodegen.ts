@@ -249,8 +249,8 @@ export type SendConnectionRequestPayload = {
 /** A user of the social network */
 export type User = {
   __typename?: 'User';
+  about: Maybe<Scalars['String']['output']>;
   company: Company;
-  companyId: Scalars['Int']['output'];
   /** All accepted connections for this user */
   connections: Maybe<Array<User>>;
   /** The post-nominal letters (e.g., M.D.) for the user */
@@ -311,7 +311,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', user: { __typename?: 'User', slug: string, firstName: string, lastName: string, credentials: string | null, company: { __typename?: 'Company', slug: string, name: string } } | null };
+export type GetUserQuery = { __typename?: 'Query', user: { __typename?: 'User', slug: string, firstName: string, lastName: string, credentials: string | null, about: string | null, company: { __typename?: 'Company', slug: string, name: string } } | null };
 
 export type GetUsersQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -419,6 +419,7 @@ export const GetUserDocument = gql`
     firstName
     lastName
     credentials
+    about
     company {
       slug
       name

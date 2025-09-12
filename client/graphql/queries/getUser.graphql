@@ -4,6 +4,7 @@ query GetUser($slug: String!) {
     firstName
     lastName
     credentials
+    about
     company {
       slug
       name
