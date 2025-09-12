@@ -219,12 +219,10 @@ users = User.create!([
 
 # Create posts and post_comments for each user
 users.each do |user|
-  # Each user gets 1-2 posts
   rand(1..2).times do
     post = user.posts.create!(
-      body: Faker::Lorem.paragraph(sentence_count: rand(2..40))
+      body: Faker::Hipster.paragraph(sentence_count: rand(2..20))
     )
-    # Each post gets 1-2 comments from random other users
     commenters = users.reject { |u| u == user }.sample(rand(1..2))
     commenters.each do |commenter|
       post.post_comments.create!(
