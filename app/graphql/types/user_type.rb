@@ -7,15 +7,15 @@ module Types
     field :slug, String, null: false do
       description "A slug ID to be used in an SEO-friendly URI"
     end
-    field :company_id, Integer, null: false
     field :first_name, String, null: false
     field :middle_name, String, null: true
     field :last_name, String, null: false
     field :nickname, String, null: true
-    field :company, Types::CompanyType, null: false
     field :credentials, String, null: true do
       description "The post-nominal letters (e.g., M.D.) for the user"
     end
+    field :about, String, null: true
+    field :company, Types::CompanyType, null: false
     field :connections, [Types::UserType], null: true do
       description "All accepted connections for this user"
     end
