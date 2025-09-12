@@ -42,7 +42,7 @@ module Types
     end
 
     field :users, Types::UserType.connection_type, null: false do
-      description "Return a paginated list of users"
+      description "A paginated list of users"
     end
 
     def users
@@ -50,7 +50,7 @@ module Types
     end
 
     field :companies, Types::CompanyType.connection_type, null: false do
-      description "Return a paginated list of companies"
+      description "A paginated list of companies"
     end
 
     def companies
@@ -58,5 +58,13 @@ module Types
     end
 
     field :post, resolver: Resolvers::PostResolver
+
+    field :posts, Types::PostType.connection_type, null: false do
+      description "A paginated list of posts"
+    end
+
+    def posts
+      Post.all
+    end
   end
 end
