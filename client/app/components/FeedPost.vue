@@ -33,7 +33,7 @@ const items = ref<DropdownMenuItem[]>([
     <div
       class="flex items-center justify-between pb-4 border-b border-blue-300"
     >
-      <div>Suggested</div>
+      <div class="text-sm">Suggested</div>
       <UDropdownMenu
         :items="items"
         :content="{
@@ -51,7 +51,7 @@ const items = ref<DropdownMenuItem[]>([
     </div>
     <div>
       <h3 class="font-semibold">
-        <NuxtLink :to="`/users/${authorSlug}`">
+        <NuxtLink :to="`/users/${authorSlug}`" class="text-secondary text-sm">
           {{ author }}
         </NuxtLink>
       </h3>

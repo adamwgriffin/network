@@ -30,7 +30,7 @@ const edges = computed(
     <h2 class="text-1xl font-bold pb-6">Doctors</h2>
     <ul class="space-y-4">
       <li v-for="{ node } in edges" :key="node.slug">
-        <NuxtLink :to="`/users/${node.slug}`">
+        <NuxtLink :to="`/users/${node.slug}`" class="text-secondary">
           {{ node.nameWithCredentials }}
         </NuxtLink>
       </li>

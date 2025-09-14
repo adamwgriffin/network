@@ -13,7 +13,7 @@ const user = computed(() => data.value?.user);
       {{ user.nameWithCredentials }}
     </h1>
     <p>
-      <NuxtLink :to="`/companies/${user.company.slug}`">
+      <NuxtLink :to="`/companies/${user.company.slug}`" class="text-secondary">
         {{ user.company.name }}
       </NuxtLink>
     </p>
