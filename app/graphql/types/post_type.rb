@@ -5,7 +5,7 @@ module Types
     description "A network post"
     field :id, ID, null: false
     field :body, String, null: false
-    field :post_comments, [Types::PostCommentType] do
+    field :post_comments, Types::PostCommentType.connection_type do
       description "User comments on this post"
     end
     field :user, Types::UserType, description: "The post author", null: false
