@@ -1,9 +1,7 @@
 query GetUser($slug: String!) {
   user(slug: $slug) {
     slug
-    firstName
-    lastName
-    credentials
+    nameWithCredentials
     about
     company {
       slug

@@ -58,7 +58,7 @@ useIntersectionObserver(
         <FeedPost
           v-if="edge?.node?.user && edge?.node?.body"
           :id="edge.node.id"
-          :author="getFullNameAndCredentials(edge.node.user)"
+          :author="edge.node.user.nameWithCredentials"
           :body="edge.node.body"
           :author-slug="edge.node.user.slug"
         />

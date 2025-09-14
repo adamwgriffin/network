@@ -10,7 +10,7 @@ const user = computed(() => data.value?.user);
 <template>
   <div v-if="user" class="max-w-2xl">
     <h1 class="text-2xl font-bold pb-6">
-      {{ getFullNameAndCredentials(user) }}
+      {{ user.nameWithCredentials }}
     </h1>
     <p>
       <NuxtLink :to="`/companies/${user.company.slug}`">

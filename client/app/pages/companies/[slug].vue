@@ -31,7 +31,7 @@ const edges = computed(
     <ul class="space-y-4">
       <li v-for="{ node } in edges" :key="node.slug">
         <NuxtLink :to="`/users/${node.slug}`">
-          {{ getFullNameAndCredentials(node) }}
+          {{ node.nameWithCredentials }}
         </NuxtLink>
       </li>
     </ul>

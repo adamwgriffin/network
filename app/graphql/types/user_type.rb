@@ -14,6 +14,9 @@ module Types
     field :credentials, String, null: true do
       description "The post-nominal letters (e.g., M.D.) for the user"
     end
+    field :name_with_credentials, String, null: false do
+      description "The user's full name and credentials, if any exist"
+    end
     field :about, String, null: true
     field :company, Types::CompanyType, null: false
     field :connections, [Types::UserType], null: true do

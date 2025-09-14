@@ -5,9 +5,7 @@ query GetPost($id: ID!) {
     updatedAt
     user {
       slug
-      firstName
-      lastName
-      credentials
+      nameWithCredentials
     }
   }
 }

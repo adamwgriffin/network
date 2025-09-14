@@ -13,7 +13,15 @@ class User < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
 
-  friendly_id :slug_candidates
+  friendly_id :name
+
+  def name
+    "#{first_name} #{last_name}"
+  end
+
+  def name_with_credentials
+    credentials? ? "#{name}, #{credentials}" : name
+  end
 
   def connections
     User.joins(
@@ -37,13 +45,6 @@ class User < ApplicationRecord
   end
 
   private
-
-    # Fields used to generate the slug via the friendly_id method
-    def slug_candidates
-      [
-        [first_name, last_name]
-      ]
-    end
 
     # Updates the slug if any of these conditions are true
     def should_generate_new_friendly_id?

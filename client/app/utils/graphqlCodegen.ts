@@ -162,10 +162,18 @@ export type Post = {
   createdAt: Scalars["ISO8601DateTime"]["output"];
   id: Scalars["ID"]["output"];
   /** User comments on this post */
-  postComments: Maybe<Array<PostComment>>;
+  postComments: Maybe<PostCommentConnection>;
   updatedAt: Scalars["ISO8601DateTime"]["output"];
   /** The post author */
   user: User;
+};
+
+/** A network post */
+export type PostPostCommentsArgs = {
+  after: InputMaybe<Scalars["String"]["input"]>;
+  before: InputMaybe<Scalars["String"]["input"]>;
+  first: InputMaybe<Scalars["Int"]["input"]>;
+  last: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type PostComment = {
@@ -175,6 +183,26 @@ export type PostComment = {
   id: Scalars["ID"]["output"];
   updatedAt: Scalars["ISO8601DateTime"]["output"];
   user: User;
+};
+
+/** The connection type for PostComment. */
+export type PostCommentConnection = {
+  __typename?: "PostCommentConnection";
+  /** A list of edges. */
+  edges: Maybe<Array<Maybe<PostCommentEdge>>>;
+  /** A list of nodes. */
+  nodes: Maybe<Array<Maybe<PostComment>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type PostCommentEdge = {
+  __typename?: "PostCommentEdge";
+  /** A cursor for use in pagination. */
+  cursor: Scalars["String"]["output"];
+  /** The item at the end of the edge. */
+  node: Maybe<PostComment>;
 };
 
 /** The connection type for Post. */
@@ -291,6 +319,8 @@ export type User = {
   id: Scalars["ID"]["output"];
   lastName: Scalars["String"]["output"];
   middleName: Maybe<Scalars["String"]["output"]>;
+  /** The user's full name and credentials, if any exist */
+  nameWithCredentials: Scalars["String"]["output"];
   nickname: Maybe<Scalars["String"]["output"]>;
   /** Pending connection requests received by this user */
   pendingReceivedRequests: Maybe<Array<Connection>>;
@@ -344,9 +374,7 @@ export type GetCompanyQuery = {
         node: {
           __typename?: "User";
           slug: string;
-          firstName: string;
-          lastName: string;
-          credentials: string | null;
+          nameWithCredentials: string;
         } | null;
       } | null> | null;
       pageInfo: {
@@ -362,6 +390,8 @@ export type GetCompanyQuery = {
 
 export type GetPostQueryVariables = Exact<{
   id: Scalars["ID"]["input"];
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type GetPostQuery = {
@@ -371,13 +401,31 @@ export type GetPostQuery = {
     body: string;
     createdAt: string;
     updatedAt: string;
-    user: {
-      __typename?: "User";
-      slug: string;
-      firstName: string;
-      lastName: string;
-      credentials: string | null;
-    };
+    user: { __typename?: "User"; slug: string; nameWithCredentials: string };
+    postComments: {
+      __typename?: "PostCommentConnection";
+      edges: Array<{
+        __typename?: "PostCommentEdge";
+        cursor: string;
+        node: {
+          __typename?: "PostComment";
+          id: string;
+          body: string;
+          user: {
+            __typename?: "User";
+            slug: string;
+            nameWithCredentials: string;
+          };
+        } | null;
+      } | null> | null;
+      pageInfo: {
+        __typename?: "PageInfo";
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+        startCursor: string | null;
+        endCursor: string | null;
+      };
+    } | null;
   };
 };
 
@@ -401,9 +449,7 @@ export type GetPostsQuery = {
         updatedAt: string;
         user: {
           __typename?: "User";
-          firstName: string;
-          lastName: string;
-          credentials: string | null;
+          nameWithCredentials: string;
           slug: string;
         };
       } | null;
@@ -427,9 +473,7 @@ export type GetUserQuery = {
   user: {
     __typename?: "User";
     slug: string;
-    firstName: string;
-    lastName: string;
-    credentials: string | null;
+    nameWithCredentials: string;
     about: string | null;
     company: { __typename?: "Company"; slug: string; name: string };
   } | null;
@@ -450,9 +494,7 @@ export type GetUsersQuery = {
       node: {
         __typename?: "User";
         slug: string;
-        firstName: string;
-        lastName: string;
-        credentials: string | null;
+        nameWithCredentials: string;
       } | null;
     } | null> | null;
     pageInfo: {
@@ -476,9 +518,7 @@ export const GetCompanyDocument = gql`
         edges {
           node {
             slug
-            firstName
-            lastName
-            credentials
+            nameWithCredentials
           }
           cursor
         }
@@ -569,16 +609,33 @@ export function useGetCompanyLazyQuery(
 export type GetCompanyQueryCompositionFunctionResult =
   VueApolloComposable.UseQueryReturn<GetCompanyQuery, GetCompanyQueryVariables>;
 export const GetPostDocument = gql`
-  query GetPost($id: ID!) {
+  query GetPost($id: ID!, $first: Int = 10, $after: String = null) {
     post(id: $id) {
       body
       createdAt
       updatedAt
       user {
         slug
-        firstName
-        lastName
-        credentials
+        nameWithCredentials
+      }
+      postComments(first: $first, after: $after) {
+        edges {
+          node {
+            id
+            body
+            user {
+              slug
+              nameWithCredentials
+            }
+          }
+          cursor
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
       }
     }
   }
@@ -597,6 +654,8 @@ export const GetPostDocument = gql`
  * @example
  * const { result, loading, error } = useGetPostQuery({
  *   id: // value for 'id'
+ *   first: // value for 'first'
+ *   after: // value for 'after'
  * });
  */
 export function useGetPostQuery(
@@ -651,9 +710,7 @@ export const GetPostsDocument = gql`
           createdAt
           updatedAt
           user {
-            firstName
-            lastName
-            credentials
+            nameWithCredentials
             slug
           }
         }
@@ -742,9 +799,7 @@ export const GetUserDocument = gql`
   query GetUser($slug: String!) {
     user(slug: $slug) {
       slug
-      firstName
-      lastName
-      credentials
+      nameWithCredentials
       about
       company {
         slug
@@ -817,9 +872,7 @@ export const GetUsersDocument = gql`
       edges {
         node {
           slug
-          firstName
-          lastName
-          credentials
+          nameWithCredentials
         }
         cursor
       }

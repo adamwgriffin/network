@@ -7,9 +7,7 @@ query GetPosts($first: Int = 10, $after: String = null) {
         createdAt
         updatedAt
         user {
-          firstName
-          lastName
-          credentials
+          nameWithCredentials
           slug
         }
       }
