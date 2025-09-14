@@ -8,6 +8,7 @@ const props = defineProps<{
   authorSlug: string;
 }>();
 
+const toast = useToast();
 const reqUrl = useRequestURL();
 const postUri = `${reqUrl.origin}/posts/${props.id}`;
 
@@ -17,6 +18,11 @@ const items = ref<DropdownMenuItem[]>([
     icon: "lucide:link",
     async onSelect() {
       await navigator.clipboard.writeText(postUri);
+      toast.add({
+        title: "Link copied 👍",
+        color: "success",
+        progress: false
+      });
     }
   },
   {

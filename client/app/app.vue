@@ -1,5 +1,11 @@
+<script setup lang="ts">
+import type { ToasterProps } from "@nuxt/ui";
+
+const toaster: ToasterProps = { position: "top-right", duration: 1600 };
+</script>
+
 <template>
-  <UApp>
+  <UApp :toaster="toaster">
     <NuxtRouteAnnouncer />
     <div class="min-h-screen grid grid-rows-[auto_1fr_auto]">
       <AppHeader />
