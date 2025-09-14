@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-end gap-24 p-6">
+  <header class="z-10 flex items-end gap-24 p-6 sticky top-0 bg-default">
     <NuxtLink to="/">
       <NetworkLogo class="fill-blue-400 dark:fill-blue-200" />
       <p class="pt-1 text-right text-xs text-blue-400 dark:text-blue-200">
