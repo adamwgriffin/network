@@ -8,15 +8,22 @@ const props = defineProps<{
   authorSlug: string;
 }>();
 
+const reqUrl = useRequestURL();
+const postUri = `${reqUrl.origin}/posts/${props.id}`;
+
 const items = ref<DropdownMenuItem[]>([
   {
     label: "Copy link to post",
     icon: "lucide:link",
     async onSelect() {
-      await navigator.clipboard.writeText(
-        `${window.location.origin}/posts/${props.id}`
-      );
+      await navigator.clipboard.writeText(postUri);
     }
+  },
+  {
+    label: "Open in new window",
+    icon: "lucide:app-window-mac",
+    href: postUri,
+    target: "_blank"
   }
 ]);
 </script>
