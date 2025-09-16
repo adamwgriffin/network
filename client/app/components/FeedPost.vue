@@ -12,6 +12,7 @@ const toast = useToast();
 const reqUrl = useRequestURL();
 const postUri = `${reqUrl.origin}/posts/${props.id}`;
 
+const clamped = ref(props.body.length > 60);
 const items = ref<DropdownMenuItem[]>([
   {
     label: "Copy link to post",
@@ -57,9 +58,18 @@ const items = ref<DropdownMenuItem[]>([
         {{ author }}
       </NuxtLink>
     </h3>
-    <p>
-      {{ body }}
-    </p>
+    <div>
+      <p :class="{ 'line-clamp-3': clamped }">
+        {{ body }}
+      </p>
+      <button
+        v-if="clamped"
+        class="cursor-pointer px-0 text-sm hover:underline text-blue-400"
+        @click="clamped = false"
+      >
+        more
+      </button>
+    </div>
     <footer class="flex items-center gap-6 pt-4 border-t border-blue-300">
       <FeedPostButton icon-name="lucide:thumbs-up">Like</FeedPostButton>
       <FeedPostButton icon-name="lucide:message-square-text">
