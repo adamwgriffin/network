@@ -35,7 +35,7 @@ watch(error, (err) => {
 
 <template>
   <div class="flex gap-2 rounded-lg p-4 mb-4 border border-blue-300">
-    <UAvatar alt="Gregory House" size="xl" class="cursor-pointer" />
+    <UAvatar alt="Gregory House" size="xl" />
     <UModal
       v-model:open="modalOpen"
       title="Create Post"
