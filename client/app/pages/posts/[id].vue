@@ -13,7 +13,7 @@ const commentEdges = computed(() => {
 </script>
 
 <template>
-  <div v-if="post" class="flex flex-col gap-6 max-w-2/3 mx-auto">
+  <div v-if="post" class="flex flex-col gap-6 min-w-2xs max-w-2/3 mx-auto">
     <div>
       <NuxtLink :to="`/users/${post.user.slug}`" class="text-secondary text-sm">
         {{ post.user.nameWithCredentials }}
