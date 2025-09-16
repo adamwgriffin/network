@@ -16,6 +16,7 @@ const postEdges = computed(
 
 <template>
   <div v-if="user" class="flex flex-col gap-4 max-w-2xl">
+    <UAvatar :alt="user.nameWithCredentials" class="size-32 text-6xl" />
     <h1 class="text-2xl font-bold">
       {{ user.nameWithCredentials }}
     </h1>
