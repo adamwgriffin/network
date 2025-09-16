@@ -64,7 +64,7 @@ module Types
     end
 
     def posts
-      Post.all
+      Post.order(created_at: :desc)
     end
   end
 end

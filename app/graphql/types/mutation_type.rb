@@ -6,5 +6,6 @@ module Types
     field :accept_connection_request, mutation: Mutations::AcceptConnectionRequest
     field :decline_connection_request, mutation: Mutations::DeclineConnectionRequest
     field :remove_connection, mutation: Mutations::RemoveConnection
+    field :create_post, mutation: Mutations::CreatePost
   end
 end

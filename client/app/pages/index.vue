@@ -52,8 +52,9 @@ useIntersectionObserver(
 </script>
 
 <template>
-  <div v-if="result?.posts">
-    <ul class="space-y-4 w-140">
+  <div>
+    <CreatePost />
+    <ul v-if="result?.posts" class="space-y-4 w-140">
       <li v-for="edge in result.posts.edges" :key="edge?.node?.id">
         <FeedPost
           v-if="edge?.node?.user && edge?.node?.body"
