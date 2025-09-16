@@ -1,4 +1,4 @@
-query GetUser($slug: String!) {
+query GetUser($slug: String!, $first: Int = 10, $after: String = null) {
   user(slug: $slug) {
     slug
     nameWithCredentials
@@ -6,6 +6,15 @@ query GetUser($slug: String!) {
     company {
       slug
       name
+    }
+    posts(first: $first, after: $after) {
+      edges {
+        node {
+          id
+          body
+        }
+        cursor
+      }
     }
   }
 }

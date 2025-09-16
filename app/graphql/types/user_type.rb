@@ -28,8 +28,12 @@ module Types
     field :pending_received_requests, [Types::ConnectionType], null: true do
       description "Pending connection requests received by this user"
     end
-    field :posts, [Types::PostType], null: true do
-      description "Network posts for this user"
+    field :posts, Types::PostType.connection_type, null: false do
+      description "A paginated list of posts for this user"
+    end
+
+    def posts
+      object.posts.order(created_at: :desc)
     end
   end
 end

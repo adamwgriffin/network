@@ -349,10 +349,18 @@ export type User = {
   pendingReceivedRequests: Maybe<Array<Connection>>;
   /** Pending connection requests sent by this user */
   pendingSentRequests: Maybe<Array<Connection>>;
-  /** Network posts for this user */
-  posts: Maybe<Array<Post>>;
+  /** A paginated list of posts for this user */
+  posts: PostConnection;
   /** A slug ID to be used in an SEO-friendly URI */
   slug: Scalars["String"]["output"];
+};
+
+/** A user of the social network */
+export type UserPostsArgs = {
+  after: InputMaybe<Scalars["String"]["input"]>;
+  before: InputMaybe<Scalars["String"]["input"]>;
+  first: InputMaybe<Scalars["Int"]["input"]>;
+  last: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** The connection type for User. */
@@ -504,6 +512,8 @@ export type GetPostsQuery = {
 
 export type GetUserQueryVariables = Exact<{
   slug: Scalars["String"]["input"];
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type GetUserQuery = {
@@ -514,6 +524,14 @@ export type GetUserQuery = {
     nameWithCredentials: string;
     about: string | null;
     company: { __typename?: "Company"; slug: string; name: string };
+    posts: {
+      __typename?: "PostConnection";
+      edges: Array<{
+        __typename?: "PostEdge";
+        cursor: string;
+        node: { __typename?: "Post"; id: string; body: string } | null;
+      } | null> | null;
+    };
   } | null;
 };
 
@@ -558,15 +576,12 @@ export const CreatePostDocument = gql`
 /**
  * __useCreatePostMutation__
  *
- * To run a mutation, you first call `useCreatePostMutation` within a Vue
- * component and pass it any options that fit your needs. When your component
- * renders, `useCreatePostMutation` returns an object that includes:
+ * To run a mutation, you first call `useCreatePostMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePostMutation` returns an object that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
  *
- * @param options that will be passed into the mutation, supported options are
- * listed on:
- * https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
  *
  * @example
  * const { mutate, loading, error, onDone } = useCreatePostMutation({
@@ -888,7 +903,7 @@ export function useGetPostsLazyQuery(
 export type GetPostsQueryCompositionFunctionResult =
   VueApolloComposable.UseQueryReturn<GetPostsQuery, GetPostsQueryVariables>;
 export const GetUserDocument = gql`
-  query GetUser($slug: String!) {
+  query GetUser($slug: String!, $first: Int = 10, $after: String = null) {
     user(slug: $slug) {
       slug
       nameWithCredentials
@@ -896,6 +911,15 @@ export const GetUserDocument = gql`
       company {
         slug
         name
+      }
+      posts(first: $first, after: $after) {
+        edges {
+          node {
+            id
+            body
+          }
+          cursor
+        }
       }
     }
   }
@@ -914,6 +938,8 @@ export const GetUserDocument = gql`
  * @example
  * const { result, loading, error } = useGetUserQuery({
  *   slug: // value for 'slug'
+ *   first: // value for 'first'
+ *   after: // value for 'after'
  * });
  */
 export function useGetUserQuery(
