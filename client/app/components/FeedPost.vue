@@ -78,5 +78,6 @@ const items = ref<DropdownMenuItem[]>([
       <FeedPostButton icon-name="lucide:repeat-2">Repost</FeedPostButton>
       <FeedPostButton icon-name="lucide:send">Send</FeedPostButton>
     </footer>
+    <slot name="comments" />
   </article>
 </template>
