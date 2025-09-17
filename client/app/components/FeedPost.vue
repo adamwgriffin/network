@@ -53,11 +53,12 @@ const items = ref<DropdownMenuItem[]>([
         />
       </UDropdownMenu>
     </header>
-    <h3 class="font-semibold">
-      <NuxtLink :to="`/users/${authorSlug}`" class="text-secondary text-sm">
+    <NuxtLink :to="`/users/${authorSlug}`" class="flex items-center gap-2">
+      <UAvatar :alt="author" />
+      <h3 class="text-secondary text-sm font-semibold">
         {{ author }}
-      </NuxtLink>
-    </h3>
+      </h3>
+    </NuxtLink>
     <div>
       <p :class="{ 'line-clamp-3': clamped }">
         {{ body }}
