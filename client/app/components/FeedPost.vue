@@ -13,7 +13,7 @@ const reqUrl = useRequestURL();
 const postUri = `${reqUrl.origin}/posts/${props.id}`;
 
 const clamped = ref(props.body.length > 60);
-const emit = defineEmits(["edit"]);
+const emit = defineEmits(["edit", "delete"]);
 const items = ref<DropdownMenuItem[]>([
   {
     label: "Copy link to post",
@@ -38,6 +38,13 @@ const items = ref<DropdownMenuItem[]>([
     icon: "lucide:pencil",
     onSelect() {
       emit("edit", props.id);
+    }
+  },
+  {
+    label: "Delete post",
+    icon: "lucide:trash",
+    onSelect() {
+      emit("delete", props.id);
     }
   }
 ]);

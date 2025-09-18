@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 const route = useRoute();
+const router = useRouter();
 
 const postId = getRouteParam(route.params.id);
 
@@ -7,19 +8,29 @@ const toast = useToast();
 const { result, refetch } = await useGetPostQuery({
   id: postId
 } satisfies GetPostQueryVariables);
-const { mutate, loading, error, onDone } = useUpdatePostMutation();
+const {
+  mutate: updatePost,
+  loading,
+  error: updatePostError,
+  onDone: onUpdatePostDone
+} = useUpdatePostMutation();
+const {
+  mutate: deletePost,
+  error: deletePostError,
+  onDone: onDeletePostDone
+} = useDestroyPostMutation();
 
 const body = ref(result.value?.post.body ?? "");
 const modalOpen = ref(false);
 
 function submit() {
-  mutate({
+  updatePost({
     postId,
     body: body.value
   });
 }
 
-onDone(() => {
+onUpdatePostDone(() => {
   modalOpen.value = false;
   refetch();
   toast.add({
@@ -29,10 +40,29 @@ onDone(() => {
   });
 });
 
-watch(error, (err) => {
+onDeletePostDone(() => {
+  router.push("/");
+  toast.add({
+    title: "Post deleted",
+    color: "success",
+    progress: false
+  });
+});
+
+watch(updatePostError, (err) => {
   if (err) {
     toast.add({
       description: "Error updating post",
+      color: "error",
+      progress: false
+    });
+  }
+});
+
+watch(deletePostError, (err) => {
+  if (err) {
+    toast.add({
+      description: "Error deleting post",
       color: "error",
       progress: false
     });
@@ -57,6 +87,7 @@ const commentEdges = computed(
       :author="post.user.nameWithCredentials"
       :author-slug="post.user.slug"
       @edit="modalOpen = true"
+      @delete="deletePost({ postId })"
     >
       <template v-if="commentEdges.length" #comments>
         <PostComments :comments="commentEdges" />
