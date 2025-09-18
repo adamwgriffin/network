@@ -13,6 +13,7 @@ const reqUrl = useRequestURL();
 const postUri = `${reqUrl.origin}/posts/${props.id}`;
 
 const clamped = ref(props.body.length > 60);
+const emit = defineEmits(["edit"]);
 const items = ref<DropdownMenuItem[]>([
   {
     label: "Copy link to post",
@@ -31,6 +32,13 @@ const items = ref<DropdownMenuItem[]>([
     icon: "lucide:app-window-mac",
     href: postUri,
     target: "_blank"
+  },
+  {
+    label: "Edit post",
+    icon: "lucide:pencil",
+    onSelect() {
+      emit("edit", props.id);
+    }
   }
 ]);
 </script>
