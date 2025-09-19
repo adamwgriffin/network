@@ -1,0 +1,23 @@
+query GetPosts($first: Int = 10, $after: String = null) {
+  posts(first: $first, after: $after) {
+    edges {
+      node {
+        id
+        body
+        createdAt
+        updatedAt
+        user {
+          nameWithCredentials
+          slug
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}

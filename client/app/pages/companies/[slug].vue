@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const route = useRoute();
-const { result, error } = useGetCompanyQuery({
-  slug: getSlug(route.params.slug)
+const { result } = useGetCompanyQuery({
+  slug: getRouteParam(route.params.slug)
 });
 
 const company = computed(() => result.value?.company);
@@ -21,25 +21,19 @@ const edges = computed(
 </script>
 
 <template>
-  <div>
-    <div>
-      <div v-if="company">
-        <h1 class="text-2xl font-bold pb-2">
-          {{ company.name }}
-        </h1>
-        <address>{{ company.headquarters }}</address>
-        <p class="py-6 max-w-2xl">{{ company.description }}</p>
-        <h2 class="text-1xl font-bold pb-6">Doctors</h2>
-        <ul class="space-y-4">
-          <li v-for="{ node } in edges" :key="node.slug">
-            <NuxtLink :to="`/users/${node.slug}`">
-              {{ getFullNameAndCredentials(node) }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
-      <p v-else-if="error">{{ error }}</p>
-      <p v-else>No company data</p>
-    </div>
+  <div v-if="company" class="max-w-2/3 mx-auto">
+    <h1 class="text-2xl font-bold pb-2">
+      {{ company.name }}
+    </h1>
+    <address>{{ company.headquarters }}</address>
+    <p class="py-6 max-w-2xl">{{ company.description }}</p>
+    <h2 class="text-1xl font-bold pb-6">Doctors</h2>
+    <ul class="space-y-4">
+      <li v-for="{ node } in edges" :key="node.slug">
+        <NuxtLink :to="`/users/${node.slug}`" class="text-secondary">
+          {{ node.nameWithCredentials }}
+        </NuxtLink>
+      </li>
+    </ul>
   </div>
 </template>

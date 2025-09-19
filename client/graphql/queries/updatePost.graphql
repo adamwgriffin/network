@@ -1,0 +1,6 @@
+mutation UpdatePost($postId: ID!, $body: String!) {
+  updatePost(input: { postId: $postId, body: $body }) {
+    success
+    errors
+  }
+}

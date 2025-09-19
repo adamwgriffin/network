@@ -40,7 +40,7 @@ function loadMore() {
     <ul class="space-y-4">
       <li v-for="edge in result?.users.edges ?? []" :key="edge?.node?.slug">
         <NuxtLink :to="`/users/${edge?.node?.slug}`">
-          {{ edge?.node && getFullNameAndCredentials(edge.node) }}
+          {{ edge?.node?.nameWithCredentials }}
         </NuxtLink>
       </li>
     </ul>

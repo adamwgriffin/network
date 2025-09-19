@@ -1,0 +1,6 @@
+mutation DestroyPost($postId: ID!) {
+  destroyPost(input: { postId: $postId }) {
+    success
+    errors
+  }
+}

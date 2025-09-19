@@ -1,0 +1,30 @@
+query GetPost($id: ID!, $first: Int = 10, $after: String = null) {
+  post(id: $id) {
+    body
+    createdAt
+    updatedAt
+    user {
+      slug
+      nameWithCredentials
+    }
+    postComments(first: $first, after: $after) {
+      edges {
+        node {
+          id
+          body
+          user {
+            slug
+            nameWithCredentials
+          }
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+}

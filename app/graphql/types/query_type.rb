@@ -29,7 +29,7 @@ module Types
     end
 
     def user(slug:)
-      User.find(slug)
+      User.friendly.find(slug)
     end
 
     field :company, Types::CompanyType, null: true do
@@ -38,11 +38,11 @@ module Types
     end
 
     def company(slug:)
-      Company.find(slug)
+      Company.friendly.find(slug)
     end
 
     field :users, Types::UserType.connection_type, null: false do
-      description "Return a paginated list of users"
+      description "A paginated list of users"
     end
 
     def users
@@ -50,11 +50,21 @@ module Types
     end
 
     field :companies, Types::CompanyType.connection_type, null: false do
-      description "Return a paginated list of companies"
+      description "A paginated list of companies"
     end
 
     def companies
       Company.all
+    end
+
+    field :post, resolver: Resolvers::PostResolver
+
+    field :posts, Types::PostType.connection_type, null: false do
+      description "A paginated list of posts"
+    end
+
+    def posts
+      Post.order(created_at: :desc)
     end
   end
 end

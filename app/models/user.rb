@@ -7,22 +7,20 @@ class User < ApplicationRecord
 
   has_many :sent_connections, class_name: "Connection", foreign_key: "requester_id", dependent: :destroy
   has_many :received_connections, class_name: "Connection", foreign_key: "recipient_id", dependent: :destroy
+  has_many :posts, dependent: :destroy
+  has_many :post_comments, dependent: :destroy
 
   validates :first_name, presence: true
   validates :last_name, presence: true
 
-  friendly_id :slug_candidates
+  friendly_id :name
 
-  # Fields used to generate the slug via the friendly_id method
-  def slug_candidates
-    [
-      [first_name, last_name]
-    ]
+  def name
+    "#{first_name} #{last_name}"
   end
 
-  # Updates the slug if any of these conditions are true
-  def should_generate_new_friendly_id?
-    slug.blank? || first_name_changed? || last_name_changed?
+  def name_with_credentials
+    credentials? ? "#{name}, #{credentials}" : name
   end
 
   def connections
@@ -45,4 +43,11 @@ class User < ApplicationRecord
   def pending_received_requests
     received_connections.pending
   end
+
+  private
+
+    # Updates the slug if any of these conditions are true
+    def should_generate_new_friendly_id?
+      slug.blank? || first_name_changed? || last_name_changed?
+    end
 end

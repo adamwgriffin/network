@@ -8,9 +8,7 @@ query GetCompany($slug: String!, $first: Int = 10, $after: String = null) {
       edges {
         node {
           slug
-          firstName
-          lastName
-          credentials
+          nameWithCredentials
         }
         cursor
       }

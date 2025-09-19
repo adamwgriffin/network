@@ -1,4 +1,12 @@
 FactoryBot.define do
+  factory :user, class: "User" do
+    first_name { "Test" }
+    last_name { "User" }
+    credentials { "M.D." }
+
+    association :company
+  end
+
   factory :house, class: "User" do
     first_name { "Gregory" }
     last_name { "House" }

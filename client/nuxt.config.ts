@@ -7,7 +7,8 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxt/test-utils",
     "@nuxt/ui",
-    "@nuxtjs/apollo"
+    "@nuxtjs/apollo",
+    "@vueuse/nuxt"
   ],
   css: ["~/assets/css/main.css"],
   apollo: {
