@@ -7,6 +7,7 @@ query GetUser($slug: String!, $first: Int = 10, $after: String = null) {
       slug
       name
     }
+    connectionTotal
     posts(first: $first, after: $after) {
       edges {
         node {
