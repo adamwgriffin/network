@@ -232,3 +232,21 @@ users.each do |user|
     end
   end
 end
+
+# Create connections for House
+house_connections = [
+  "james-wilson",
+  "robert-chase",
+  "eric-foreman",
+  "allison-cameron",
+  "remy-hadley",
+  "lawrence-kutner"
+]
+house = users.find { |u| u.slug == "gregory-house" }
+house_accepted_connections = users.select { |u| house_connections.include?(u.slug) }
+house_accepted_connections.each do |connection|
+  Connection.create!(requester: house, recipient: connection, status: "accepted")
+end
+# Pending connections for House
+cuddy = users.find { |u| u.slug == "lisa-cuddy" }
+Connection.create!(requester: house, recipient: cuddy)
