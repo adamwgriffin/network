@@ -5,9 +5,6 @@ const { data } = await useAsyncQuery<GetUserQuery>(GetUserDocument, {
 } satisfies GetUserQueryVariables);
 
 const user = computed(() => data.value?.user);
-const connectionTotal = computed(
-  () => `${data.value?.user?.connectionTotal} connections`
-);
 const postEdges = computed(
   () =>
     data.value?.user?.posts.edges?.filter(
@@ -27,14 +24,13 @@ const postEdges = computed(
         {{ user.company.name }}
       </NuxtLink>
     </p>
-    <NuxtLink
-      v-if="user.slug === 'gregory-house'"
-      to="/mynetwork/connections"
-      class="text-secondary"
-    >
-      {{ connectionTotal }}
-    </NuxtLink>
-    <div v-else>{{ connectionTotal }}</div>
+    <!-- TODO: replace hardcoded logged in user slug with data from auth -->
+    <UserConnections
+      v-if="user.connectionTotal"
+      :count="user.connectionTotal"
+      :use-slug="user.slug"
+      :is-logged-in-user="user.slug === 'gregory-house'"
+    />
     <div v-if="user.about">
       <h2 class="text-1xl font-bold pb-2">About</h2>
       <p>{{ user.about }}</p>

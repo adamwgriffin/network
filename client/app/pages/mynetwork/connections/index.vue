@@ -14,7 +14,7 @@ const connectionEdges = computed(
 <template>
   <div v-if="connectionEdges">
     <h2 class="text-1xl font-bold pb-2">
-      {{ result?.user?.connectionTotal }} Connections
+      {{ getConnectionsText(result?.user?.connectionTotal ?? 0) }}
     </h2>
     <ul class="space-y-4">
       <li v-for="{ node } in connectionEdges" :key="node.id">
