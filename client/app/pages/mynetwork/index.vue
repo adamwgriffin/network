@@ -1,24 +1,28 @@
 <script lang="ts" setup>
-const queryVariables: GetUsersQueryVariables = { first: 5 };
-const { result, fetchMore, error, loading } = useGetUsersQuery(queryVariables);
+const queryVariables: GetUsersToConnectWithQueryVariables = { userId: 6 };
+const { result, fetchMore, error, loading } =
+  useGetUsersToConnectWithQuery(queryVariables);
 
 function loadMore() {
   fetchMore({
     variables: {
       ...queryVariables,
-      after: result.value?.users.pageInfo.endCursor
-    } satisfies GetUsersQueryVariables,
+      after: result.value?.usersToConnectWith.pageInfo.endCursor
+    } satisfies GetUsersToConnectWithQueryVariables,
     updateQuery: (previousResult, { fetchMoreResult }) => {
-      const newEdges = fetchMoreResult.users.edges ?? [];
-      const pageInfo = fetchMoreResult.users.pageInfo;
+      const newEdges = fetchMoreResult.usersToConnectWith.edges ?? [];
+      const pageInfo = fetchMoreResult.usersToConnectWith.pageInfo;
 
       if (newEdges.length) {
-        const newResult: GetUsersQuery = {
+        const newResult: GetUsersToConnectWithQuery = {
           ...previousResult,
           ...{
             users: {
               // Concat edges
-              edges: [...(previousResult.users.edges ?? []), ...newEdges],
+              edges: [
+                ...(previousResult.usersToConnectWith.edges ?? []),
+                ...newEdges
+              ],
               // Override with new pageInfo
               pageInfo
             }
@@ -37,22 +41,21 @@ function loadMore() {
 <template>
   <div>
     <h2 class="text-2xl font-bold pb-6">Connect with some cool doctors 😎</h2>
-    <ul class="space-y-4">
-      <li v-for="edge in result?.users.edges ?? []" :key="edge?.node?.slug">
-        <NuxtLink
-          :to="`/users/${edge?.node?.slug}`"
-          class="flex items-center gap-2 text-secondary"
-        >
-          <UAvatar :alt="edge?.node?.nameWithCredentials" />
-          <div>
-            {{ edge?.node?.nameWithCredentials }}
-          </div>
-        </NuxtLink>
+    <ul class="grid grid-cols-[repeat(auto-fill,minmax(10rem,_1fr))] gap-4">
+      <li
+        v-for="edge in result?.usersToConnectWith.edges ?? []"
+        :key="edge?.node?.slug"
+      >
+        <UserCard
+          :name="edge?.node?.nameWithCredentials ?? ''"
+          :slug="edge?.node?.slug ?? ''"
+          @connect-clicked="console.log('connect-clicked event')"
+        />
       </li>
     </ul>
     <UContainer class="py-6 text-center">
       <button
-        v-if="result?.users?.pageInfo?.hasNextPage"
+        v-if="result?.usersToConnectWith?.pageInfo?.hasNextPage"
         :disabled="loading"
         class="cursor-pointer flex items-center gap-2"
         @click="loadMore"
