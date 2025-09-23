@@ -43,6 +43,10 @@ class Connection < ApplicationRecord
     self.find(connection_id)&.destroy!
   end
 
+  def self.users_to_connect_with(user_id)
+    User.without_connection_to(user_id).where.not(id: user_id).order(created_at: :desc)
+  end
+
   private
 
     def users_are_different

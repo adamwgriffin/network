@@ -15,6 +15,21 @@ class User < ApplicationRecord
 
   friendly_id :name
 
+  scope :without_connection_to, ->(user_id) {
+    where(
+      %{
+        NOT EXISTS (
+          SELECT 1
+          FROM connections c
+          WHERE (c.requester_id = ? AND c.recipient_id = users.id)
+            OR (c.recipient_id = ? AND c.requester_id = users.id)
+        )
+      },
+      user_id,
+      user_id
+    )
+  }
+
   def name
     "#{first_name} #{last_name}"
   end

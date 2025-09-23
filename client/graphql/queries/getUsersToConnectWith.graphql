@@ -1,0 +1,22 @@
+query GetUsersToConnectWith(
+  $userId: Int!
+  $first: Int = 10
+  $after: String = null
+) {
+  usersToConnectWith(userId: $userId, first: $first, after: $after) {
+    edges {
+      node {
+        id
+        nameWithCredentials
+        slug
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+  }
+}

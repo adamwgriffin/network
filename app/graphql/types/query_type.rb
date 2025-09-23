@@ -32,6 +32,15 @@ module Types
       User.friendly.find(slug)
     end
 
+    field :users_to_connect_with, Types::UserType.connection_type, null: false do
+      description "A paginated list of potential users to connect with"
+      argument :user_id, Integer, required: true
+    end
+
+    def users_to_connect_with(user_id:)
+      Connection.users_to_connect_with(user_id)
+    end
+
     field :company, Types::CompanyType, null: true do
       description "Find a company by slug"
       argument :slug, String, required: true
