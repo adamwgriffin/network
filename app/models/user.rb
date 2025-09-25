@@ -15,6 +15,9 @@ class User < ApplicationRecord
 
   friendly_id :name
 
+  # Find users that have no connection record for user_id. Using NOT EXISTS with
+  # a subquery like this is apparenlty supposed to be more effecient than doing
+  # something like an outer join instead
   scope :without_connection_to, ->(user_id) {
     where(
       %{
