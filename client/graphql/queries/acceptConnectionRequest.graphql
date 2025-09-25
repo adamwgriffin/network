@@ -1,0 +1,6 @@
+mutation AcceptConnectionRequest($connectionId: ID!) {
+  acceptConnectionRequest(input: { connectionId: $connectionId }) {
+    success
+    errors
+  }
+}

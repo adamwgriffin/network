@@ -1,0 +1,13 @@
+query GetSentConnectionRequests($slug: String!) {
+  user(slug: $slug) {
+    pendingSentRequests {
+      id
+      createdAt
+      recipient {
+        id
+        slug
+        nameWithCredentials
+      }
+    }
+  }
+}

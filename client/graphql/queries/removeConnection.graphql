@@ -1,0 +1,6 @@
+mutation RemoveConnection($connectionId: ID!) {
+  removeConnection(input: { connectionId: $connectionId }) {
+    success
+    errors
+  }
+}
