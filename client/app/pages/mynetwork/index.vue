@@ -1,7 +1,32 @@
 <script lang="ts" setup>
 const queryVariables: GetUsersToConnectWithQueryVariables = { userId: 6 };
-const { result, fetchMore, error, loading } =
+const { result, fetchMore, refetch, loading } =
   useGetUsersToConnectWithQuery(queryVariables);
+
+const toast = useToast();
+const { mutate, loading: sendConnectionLoading } =
+  useSendConnectionRequestMutation();
+
+async function sendConnectionRequest(recipientId: string) {
+  try {
+    await mutate({
+      requesterId: "6",
+      recipientId
+    });
+    toast.add({
+      title: "Request sent",
+      color: "success",
+      progress: false
+    });
+    refetch();
+  } catch {
+    toast.add({
+      description: "Error sending request",
+      color: "error",
+      progress: false
+    });
+  }
+}
 
 function loadMore() {
   fetchMore({
@@ -49,22 +74,21 @@ function loadMore() {
         <UserCard
           :name="edge?.node?.nameWithCredentials ?? ''"
           :slug="edge?.node?.slug ?? ''"
-          @connect-clicked="console.log('connect-clicked event')"
+          :connect-disabled="sendConnectionLoading"
+          @connect-clicked="sendConnectionRequest(edge?.node?.id ?? '')"
         />
       </li>
     </ul>
-    <UContainer class="py-6 text-center">
+    <UContainer class="flex justify-center py-6">
       <button
         v-if="result?.usersToConnectWith?.pageInfo?.hasNextPage"
         :disabled="loading"
         class="cursor-pointer flex items-center gap-2"
         @click="loadMore"
       >
-        Give me more doctors! <UIcon name="lucide:circle-plus" class="size-6" />
+        Give me more doctors!
+        <UIcon name="lucide:circle-plus" class="size-6" />
       </button>
     </UContainer>
-    <p v-if="error">
-      {{ error }}
-    </p>
   </div>
 </template>
