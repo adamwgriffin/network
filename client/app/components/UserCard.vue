@@ -1,5 +1,9 @@
 <script setup lang="ts">
-defineProps<{ name: string; slug: string }>();
+const { connectDisabled = false } = defineProps<{
+  name: string;
+  slug: string;
+  connectDisabled?: boolean;
+}>();
 const emit = defineEmits<{
   (e: "connect-clicked"): void;
 }>();
@@ -19,6 +23,7 @@ const emit = defineEmits<{
         variant="outline"
         icon="lucide:user-plus"
         class="cursor-pointer"
+        :disabled="connectDisabled"
         @click="emit('connect-clicked')"
       >
         Connect
