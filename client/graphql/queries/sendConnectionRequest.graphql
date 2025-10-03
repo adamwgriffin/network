@@ -1,0 +1,8 @@
+mutation SendConnectionRequest($requesterId: ID!, $recipientId: ID!) {
+  sendConnectionRequest(
+    input: { requesterId: $requesterId, recipientId: $recipientId }
+  ) {
+    success
+    errors
+  }
+}

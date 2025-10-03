@@ -1,0 +1,24 @@
+query GetUserConnections(
+  $slug: String!
+  $first: Int = 10
+  $after: String = null
+) {
+  user(slug: $slug) {
+    connectionTotal
+    connections(first: $first, after: $after) {
+      edges {
+        cursor
+        node {
+          slug
+          nameWithCredentials
+        }
+      }
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
+    }
+  }
+}

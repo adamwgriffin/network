@@ -1,0 +1,6 @@
+mutation DeclineConnectionRequest($connectionId: ID!) {
+  declineConnectionRequest(input: { connectionId: $connectionId }) {
+    success
+    errors
+  }
+}

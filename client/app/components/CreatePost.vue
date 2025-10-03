@@ -3,34 +3,29 @@ const body = ref("");
 const modalOpen = ref(false);
 
 const toast = useToast();
-const { mutate, loading, error, onDone } = useCreatePostMutation();
+const { mutate: createPost, loading } = useCreatePostMutation();
 
-function submit() {
-  mutate({
-    userId: "6",
-    body: body.value
-  });
-}
-
-onDone(() => {
-  modalOpen.value = false;
-  body.value = "";
-  toast.add({
-    title: "Post created 🎉",
-    color: "success",
-    progress: false
-  });
-});
-
-watch(error, (err) => {
-  if (err) {
+async function submit() {
+  try {
+    await createPost({
+      userId: "6",
+      body: body.value
+    });
+    modalOpen.value = false;
+    body.value = "";
+    toast.add({
+      title: "Post created 🎉",
+      color: "success",
+      progress: false
+    });
+  } catch {
     toast.add({
       description: "Error creating post",
       color: "error",
       progress: false
     });
   }
-});
+}
 </script>
 
 <template>

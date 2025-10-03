@@ -19,8 +19,9 @@ module Types
     end
     field :about, String, null: true
     field :company, Types::CompanyType, null: false
-    field :connections, [Types::UserType], null: true do
-      description "All accepted connections for this user"
+    field :connection_total, Integer, null: false
+    field :connections, Types::UserType.connection_type, null: true do
+      description "A paginated list of connections for this user"
     end
     field :pending_sent_requests, [Types::ConnectionType], null: true do
       description "Pending connection requests sent by this user"
@@ -34,6 +35,10 @@ module Types
 
     def posts
       object.posts.order(created_at: :desc)
+    end
+
+    def connection_total
+      object.connections.count
     end
   end
 end
