@@ -29,6 +29,30 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#name" do
+    it "returns the first name and last name as a string" do
+      expect(thirteen.name).to eq("#{thirteen.first_name} #{thirteen.last_name}")
+    end
+  end
+
+  describe "#name_with_credentials" do
+    context "when credentials are present" do
+      it "returns the first name, last name and credentials" do
+        user = create(:user)
+        expect(user.credentials).to be_present
+        expect(user.name_with_credentials).to eq("#{user.first_name} #{user.last_name}, #{user.credentials}")
+      end
+    end
+
+    context "when credentials are not present" do
+      it "returns the first name and last name only" do
+        user = create(:user, credentials: nil)
+        expect(user.credentials).to be_blank
+        expect(user.name_with_credentials).to eq("#{user.first_name} #{user.last_name}")
+      end
+    end
+  end
+
   describe "#connections" do
     it "returns all accepted connections for a user" do
       create(:connection, requester: house, recipient: wilson, status: "accepted")
