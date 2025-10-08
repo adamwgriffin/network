@@ -47,4 +47,20 @@ FactoryBot.define do
 
     association :company
   end
+
+  factory :taub, class: "User" do
+    first_name { "Chris" }
+    last_name { "Taub" }
+    credentials { "M.D." }
+
+    association :company
+  end
+
+  factory :kutner, class: "User" do
+    first_name { "Lawrence" }
+    last_name { "Kutner" }
+    credentials { "M.D." }
+
+    association :company
+  end
 end
