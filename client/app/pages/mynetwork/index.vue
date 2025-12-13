@@ -93,9 +93,9 @@ function loadMore() {
         </li>
       </ul>
     </nav>
-    <section>
-      <h2 class="text-2xl font-bold pb-6">Connect with some cool doctors 😎</h2>
-      <ul class="grid grid-cols-[repeat(auto-fill,minmax(10rem,_1fr))] gap-4">
+    <section class="md:min-w-md">
+      <h2 class="text-2xl font-bold pb-6">People to connect with</h2>
+      <ul class="grid md:grid-cols-2 gap-4">
         <li
           v-for="edge in result?.usersToConnectWith.edges ?? []"
           :key="edge?.node?.slug"
@@ -115,7 +115,7 @@ function loadMore() {
           class="cursor-pointer flex items-center gap-2"
           @click="loadMore"
         >
-          Give me more doctors!
+          Load more
           <UIcon name="lucide:circle-plus" class="size-6" />
         </button>
       </UContainer>
