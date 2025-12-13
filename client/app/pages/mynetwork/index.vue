@@ -41,16 +41,15 @@ function loadMore() {
       if (newEdges.length) {
         const newResult: GetUsersToConnectWithQuery = {
           ...previousResult,
-          ...{
-            users: {
-              // Concat edges
-              edges: [
-                ...(previousResult.usersToConnectWith.edges ?? []),
-                ...newEdges
-              ],
-              // Override with new pageInfo
-              pageInfo
-            }
+          usersToConnectWith: {
+            ...previousResult.usersToConnectWith,
+            // Concatenate edges
+            edges: [
+              ...(previousResult.usersToConnectWith.edges ?? []),
+              ...newEdges
+            ],
+            // Override with new pageInfo
+            pageInfo
           }
         };
 
