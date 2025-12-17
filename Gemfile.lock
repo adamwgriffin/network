@@ -105,7 +105,7 @@ GEM
     faker (3.5.3)
       i18n (>= 1.8.11, < 2)
     fiber-storage (1.0.1)
-    friendly_id (5.5.1)
+    friendly_id (5.6.0)
       activerecord (>= 4.0.0)
     fugit (1.12.1)
       et-orbi (~> 1.4)
@@ -362,7 +362,7 @@ DEPENDENCIES
   debug
   factory_bot_rails
   faker
-  friendly_id (~> 5.5.0)
+  friendly_id (~> 5.6.0)
   graphql (~> 2.5)
   kamal
   overmind
